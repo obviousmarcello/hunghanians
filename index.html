@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hunghanians - Roots. Connect.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/ja-jayagiri-sans');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ghana-red: #CE1126;
+            --ghana-yellow: #FCD116;
+            --ghana-green: #006B3F;
+            --ghana-black: #000000;
+        }
+
+        body {
+            font-family: 'JA Jayagiri Sans', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--ghana-black);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            color: var(--ghana-red);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--ghana-black);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(0, 107, 63, 0.7), rgba(206, 17, 38, 0.5)), 
+                        url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgZmlsbD0iI0NFMTEyNiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIi8+PC9zdmc+') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            margin-top: 0;
+            padding: 6rem 1rem 4rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url(background.jpeg);
+            background-size: cover;
+            background-position: center;
+            opacity: 0.85;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.4);
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--ghana-red);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(206, 17, 38, 0.3);
+        }
+
+        .cta-button:hover {
+            background: var(--ghana-yellow);
+            color: var(--ghana-black);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(252, 209, 22, 0.4);
+        }
+
+        .section {
+            padding: clamp(3rem, 8vw, 6rem) 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+            color: var(--ghana-black);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
+            border-radius: 2px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            padding: clamp(2rem, 5vw, 3rem);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+            border-color: var(--ghana-yellow);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .event-title {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            color: var(--ghana-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--ghana-green);
+            font-weight: 600;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .detail-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--ghana-red), var(--ghana-yellow));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .detail-content h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--ghana-black);
+        }
+
+        .detail-content p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--ghana-yellow);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-left-color: var(--ghana-red);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            margin-bottom: 1rem;
+            color: var(--ghana-green);
+            font-weight: 700;
+        }
+
+        .info-card p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, var(--ghana-red), var(--ghana-green));
+            color: white;
+            text-align: center;
+            padding: clamp(3rem, 6vw, 5rem) 5%;
+            margin-top: 4rem;
+        }
+
+        .contact-section h2 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .contact-section p {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--ghana-yellow);
+            color: var(--ghana-black);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            transition: all 0.3s ease;
+        }
+
+        .contact-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+        footer {
+            background: var(--ghana-black);
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+        }
+
+        footer p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                max-height: 400px;
+            }
+
+            .nav-links li {
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1.2rem 5%;
+                font-size: 1.1rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 3rem 5%;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .nav-content {
+                padding: 0 2rem;
+            }
+
+            .event-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1441px) {
+            .section {
+                padding: 6rem 10%;
+            }
+
+            .hero h1 {
+                font-size: 5rem;
+            }
+
+            .hero p {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="Hunghanians Logo" class="logo" id="logo">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#event">Event</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to Hunghanians</h1>
+            <p>Celebrating Ghanaian Culture & Community in Hungary</p>
+            <a href="#event" class="cta-button">Discover Our Next Event</a>
+        </div>
+    </section>
+
+    <section class="section" id="event">
+        <h2 class="section-title">Upcoming Event</h2>
+        <div class="event-card">
+            <div class="event-header">
+                <div>
+                    <h3 class="event-title">Get together 2026</h3>
+                    <p class="event-date">August 8-9., 2026</p>
+                </div>
+            </div>
+            <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #555; margin-bottom: 2rem; line-height: 1.8;">
+                Join us for an unforgettable 2-day celebration! Experience authentic Ghanaian cuisine, traditional music and dance, and connect with the vibrant Ghanaian community in Hungary.
+            </p>
+            <div class="event-details">
+                <div class="detail-item">
+                    <div class="detail-icon">📍</div>
+                    <div class="detail-content">
+                        <h3>Location</h3>
+                        <p>Kelet-Európa Misszió<br>2365 Inárcs, Szőlőhegy</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">🍲</div>
+                    <div class="detail-content">
+                        <h3>Food & Drinks</h3>
+                        <p>Authentic Ghanaian Dishes and Refreshments</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">👥</div>
+                    <div class="detail-content">
+                        <h3>Community</h3>
+                        <p>Connect with Ghanaians and descendants living in Hungary</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="community">
+        <h2 class="section-title">Community</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🇬🇭 About Us</h3>
+                <p>Hunghanians is a community connecting Ghanaians and their descendants living in Hungary. We celebrate our rich culture, support each other, and create a home away from home.</p>
+            </div>
+            <div class="info-card">
+                <h3>🎉 Annual Get Together Party</h3>
+                <p>Our annual Get together party is the center of our community's life in Hungary</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <h2>Stay Connected</h2>
+        <p>Join us and never miss an update on our event!</p>
+        <a href="mailto:hunghanians@gmail.com" class="contact-button">Contact Us</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hunghanians - Roots. Connect.</p>
+    </footer>
+
+    <script>
+        // Load the actual logo image
+        const logoImg = document.getElementById('logo');
+        logoImg.src = 'logo.png';
+        logoImg.alt = 'Hunghanians Logo';
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        const nav = document.querySelector('.nav');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.padding = '1rem 5%';
+                nav.style.boxShadow = '0 2px 30px rgba(0,0,0,0.1)';
+            } else {
+                nav.style.padding = '1.5rem 5%';
+                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.05)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
