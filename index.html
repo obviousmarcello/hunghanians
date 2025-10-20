@@ -93,16 +93,15 @@
         }
 
         .hero {
+            background: linear-gradient(135deg, rgba(0, 107, 63, 0.7), rgba(206, 17, 38, 0.5)),
+                        url('background.jpeg') center/cover no-repeat;
+            position: relative;
             min-height: 100vh;
-            background: linear-gradient(135deg, rgba(0, 107, 63, 0.7), rgba(206, 17, 38, 0.5)), 
-                        url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgZmlsbD0iI0NFMTEyNiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIi8+PC9zdmc+') center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
-            margin-top: 0;
             padding: 6rem 1rem 4rem;
         }
 
@@ -351,14 +350,26 @@
         }
 
         footer {
-            background: (background_down.jpeg);
+            background: url('background_down.jpeg') center/cover no-repeat;
             text-align: center;
             padding: 2rem 5%;
+            color: white; /* optional if your footer background is dark */
+        }
+
         }
 
         footer p {
             opacity: 0.9;
             font-size: 0.95rem;
+        }
+        event {
+            background: #8d7e5f;  /* Change to your desired color */
+            color: white;         /* Ensures section text is readable */
+        }
+
+        community {
+            background: #8d7e5f;  /* You can use the same or a different color */
+            color: white;
         }
 
         /* Mobile Menu Styles */
