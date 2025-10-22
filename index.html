@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hunghanians - Roots. Connect.</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-Vr9D3fZShL1r8Cg2dWv6Y1m/zI6+J5y4VJ8h/3VdU6y+7tZz+Wk4y5Zc5T5hT6bTfh4D2pXG0U6d3D+/W+R4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        @import url('https://fonts.cdnfonts.com/css/ja-jayagiri-sans');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'JA Jayagiri Sans', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Poppins', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             color: #1a1a1a;
             line-height: 1.6;
             overflow-x: hidden;
@@ -83,6 +83,8 @@
             gap: 5px;
             cursor: pointer;
             padding: 5px;
+            background: none;
+            border: none;
         }
 
         .menu-toggle span {
@@ -94,7 +96,7 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, rgba(0, 107, 63, 0.7), rgba(206, 17, 38, 0.5)),
+            background: linear-gradient(135deg, rgba(0, 107, 63, 0.3), rgba(206, 17, 38, 0.2)),
                         url('background.jpeg') center/cover no-repeat;
             position: relative;
             min-height: 100vh;
@@ -104,19 +106,6 @@
             align-items: center;
             text-align: center;
             padding: 6rem 1rem 4rem;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url(background.jpeg);
-            background-size: cover;
-            background-position: center;
-            opacity: 0.85;
         }
 
         .hero-content {
@@ -165,6 +154,8 @@
             font-size: clamp(1rem, 2.5vw, 1.2rem);
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(206, 17, 38, 0.3);
+            border: none;
+            cursor: pointer;
         }
 
         .cta-button:hover {
@@ -176,7 +167,6 @@
 
         .section {
             padding: clamp(3rem, 8vw, 6rem) 5%;
-            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -238,6 +228,20 @@
             font-size: clamp(1rem, 2.5vw, 1.2rem);
             color: var(--ghana-green);
             font-weight: 600;
+        }
+
+        .event-description {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-location-date {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            color: #555;
+            line-height: 1.8;
+            margin: 1.5rem 0;
         }
 
         .event-details {
@@ -313,13 +317,13 @@
         }
 
         .contact-section {
-            background: url('background_down.jpeg') center/cover no-repeat;
-            color: white; /* make text readable on the image */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('background_down.jpeg') center/cover no-repeat;
+            color: white;
             text-align: center;
             padding: clamp(3rem, 6vw, 5rem) 5%;
             margin-top: 0;
         }
-
 
         .contact-section h2 {
             font-size: clamp(2rem, 5vw, 2.8rem);
@@ -343,6 +347,8 @@
             font-weight: 700;
             font-size: clamp(1rem, 2.5vw, 1.2rem);
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
         .contact-button:hover {
@@ -352,7 +358,7 @@
         }
 
         footer {
-            background-color: #333; /* or any solid color you want */
+            background-color: #333;
             color: white;
             text-align: center;
             padding: 2rem 5%;
@@ -364,8 +370,9 @@
         }
         
         #event, #community {
-            background-color: #f8eab2;  /* your desired color */
+            background-color: #f8eab2;
         }
+
         .event-buttons {
             display: flex;
             justify-content: space-between;
@@ -383,7 +390,160 @@
 
         .event-button i {
             margin-right: 0.5rem;
-        }    
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideDown 0.4s ease;
+            overflow: hidden;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--ghana-green), var(--ghana-yellow));
+            padding: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--ghana-black);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--ghana-yellow);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--ghana-red);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--ghana-yellow);
+            color: var(--ghana-black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(206, 17, 38, 0.3);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-message i {
+            font-size: 4rem;
+            color: var(--ghana-green);
+            margin-bottom: 1rem;
+        }
+
+        .success-message h3 {
+            color: var(--ghana-green);
+            margin-bottom: 1rem;
+        }
         
         /* Mobile Menu Styles */
         @media (max-width: 768px) {
@@ -435,6 +595,25 @@
             .section {
                 padding: 3rem 5%;
             }
+
+            .event-buttons {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+                        /* Mobile background adjustments */
+            .hero {
+                background-position: center 80%;
+                min-height: 80vh;
+            }
+            
+            .contact-section {
+                background-position: center 50%;
+                padding: clamp(4rem, 8vw, 6rem) 5%;
+            }
         }
 
         @media (min-width: 769px) and (max-width: 1024px) {
@@ -467,18 +646,18 @@
     </style>
 </head>
 <body>
-    <nav class="nav">
+    <nav class="nav" role="navigation" aria-label="Main navigation">
         <div class="nav-content">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="Hunghanians Logo" class="logo" id="logo">
-            <div class="menu-toggle" id="menuToggle">
+            <img src="logo_white.jpg" alt="Hunghanians Logo" class="logo">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#event">Event</a></li>
-                <li><a href="#contact">Contact</a></li>
+            </button>
+            <ul class="nav-links" id="navLinks" role="menubar">
+                <li role="none"><a href="#home" role="menuitem">Home</a></li>
+                <li role="none"><a href="#event" role="menuitem">Event</a></li>
+                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -497,37 +676,39 @@
             <div class="event-header">
                 <div>
                     <h3 class="event-title">Get Together 2026</h3>
-                    <p class="event-date">August 8-9., 2026</p>
+                    <p class="event-date">August 8-9, 2026</p>
                 </div>
             </div>
-            <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #555; line-height: 1.8;">
+            <p class="event-description">
                 Hello dear friend!<br>
-                If you’d like to take part in the Ghanaian Get Together Party, please fill out this 3-minute registration form.<br>
-                It’s important to complete it, as this information helps us plan food and drinks for the event.
+                <br>
+                Join us for our <strong>annual Ghanaian community gathering in Hungary</strong>, where we come together to celebrate our roots, culture and friendship.<br>
+                Let's share memories, good food, music and laughter - and make new ones along the way!
             </p>
-
-            <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #555; line-height: 1.8;">
-                📍 Location: Inárcs, Szőlőhegy, 2365 (KEMP)<br>
-                📅 Date: August 8–9, 2026
-            </p>
-
-            <p style="font-size: clamp(1rem, 2.5vw, 1.15rem); color: #555; line-height: 1.8;">
-                💰 Participation fee:<br>
+            <br>
+            <p class="event-location-date">
+                📍 <strong>Location:</strong> Inárcs, Szőlőhegy, 2365 (KEMP)<br>
+                📅 <strong>Date:</strong> August 8–9, 2026<br>
+                💰 <strong>Participation fee:</strong><br>
                 – Adults: 10,000 HUF / person<br>
                 – Children (ages 6–14): 5,000 HUF / person<br>
-                The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won’t be able to confirm your spot at the event.
             </p>
 
-        <div class="event-buttons">
-            <a href="https://facebook.com" target="_blank" class="contact-button event-button">
-                <i class="fab fa-facebook-f"></i> View Facebook event
-            </a>
+            <p class="event-description">
+                <strong>Important!</strong><br>
+                In previous years, food and drink quantities were not always sufficient for everyone. To make sure there's enough food for all participants this year, <strong>attandance is only possible with prior registration and payment</strong>.<br>
+                Bring your family, your friends and your Ghanaian spirit - we can't wait to see you all again! ❤️💛💚
+            </p>
 
-            <a href="https://docs.google.com/forms/d/1s4tyGlh01djRyoiZPimXUjb_PSEqfbLgj7vmx87SHZI/preview" target="_blank" class="contact-button event-button">
-                <i class="fa-solid fa-user-plus"></i> Register here
-            </a>
+            <div class="event-buttons">
+                <a href="https://docs.google.com/forms/d/1s4tyGlh01djRyoiZPimXUjb_PSEqfbLgj7vmx87SHZI/preview" target="_blank" rel="noopener noreferrer" class="contact-button event-button" aria-label="Register for the event">
+                    <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Register here
+                </a>
+                <a href="https://facebook.com/events/your-event-id" target="_blank" rel="noopener noreferrer" class="contact-button event-button" aria-label="View event on Facebook">
+                    <i class="fab fa-facebook-f" aria-hidden="true"></i> View Facebook event
+                </a>
+            </div>
         </div>
-      </div>
     </section>
 
     <section class="section" id="community">
@@ -547,31 +728,64 @@
     <section class="contact-section" id="contact">
         <h2>Stay Connected</h2>
         <p>Join us and never miss an update on our event!</p>
-        <a href="mailto:hunghanians@gmail.com" class="contact-button">Contact Us</a>
+        <button class="contact-button" id="contactBtn" aria-label="Open contact form">Contact Us</button>
     </section>
 
-    <footer>
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Get in Touch</h2>
+                <button class="close" id="closeModal" aria-label="Close contact form">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required aria-required="true"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <h3>Message Sent!</h3>
+                    <p>Thank you for contacting us. We'll get back to you soon!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer role="contentinfo">
         <p>&copy; 2025 Hunghanians - Roots. Connect.</p>
     </footer>
 
     <script>
-        // Load the actual logo image
-        const logoImg = document.getElementById('logo');
-        logoImg.src = 'logo_new.jpg';
-        logoImg.alt = 'Hunghanians Logo';
-
         // Mobile menu toggle
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
 
         menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            const isExpanded = navLinks.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', isExpanded);
         });
 
         // Close menu when clicking on a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
             });
         });
 
@@ -590,7 +804,6 @@
         });
 
         // Navbar scroll effect
-        let lastScroll = 0;
         const nav = document.querySelector('.nav');
         
         window.addEventListener('scroll', () => {
@@ -603,14 +816,81 @@
                 nav.style.padding = '1.5rem 5%';
                 nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.05)';
             }
-            
-            lastScroll = currentScroll;
         });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!nav.contains(e.target)) {
                 navLinks.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('contactModal');
+        const contactBtn = document.getElementById('contactBtn');
+        const closeModal = document.getElementById('closeModal');
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+
+        contactBtn.addEventListener('click', () => {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            // Focus on first form field for accessibility
+            setTimeout(() => document.getElementById('name').focus(), 100);
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            contactForm.style.display = 'block';
+            successMessage.style.display = 'none';
+            contactForm.reset();
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                contactForm.style.display = 'block';
+                successMessage.style.display = 'none';
+                contactForm.reset();
+            }
+        });
+
+        // Handle form submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Here you would normally send the form data to a server
+            // For now, we'll just show the success message
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            console.log('Form data:', data);
+            
+            // Show success message
+            contactForm.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Close modal after 3 seconds
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                contactForm.style.display = 'block';
+                successMessage.style.display = 'none';
+                contactForm.reset();
+            }, 3000);
+        });
+
+        // Keyboard accessibility for modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                contactForm.style.display = 'block';
+                successMessage.style.display = 'none';
+                contactForm.reset();
             }
         });
     </script>
