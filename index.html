@@ -62,6 +62,7 @@
             display: flex;
             gap: 2.5rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -75,6 +76,31 @@
 
         .nav-links a:hover {
             color: var(--ghana-red);
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 50px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn.active {
+            background: var(--ghana-red);
+            color: white;
         }
 
         .menu-toggle {
@@ -96,8 +122,8 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, rgba(0, 107, 63, 0.3), rgba(206, 17, 38, 0.2)),
-                        url('background.jpeg') center/cover no-repeat;
+            background: linear-gradient(135deg, rgba(0, 107, 63, 0.7), rgba(206, 17, 38, 0.5)),
+                        url('background.jpeg') center/cover no-repeat fixed;
             position: relative;
             min-height: 100vh;
             display: flex;
@@ -167,6 +193,7 @@
 
         .section {
             padding: clamp(3rem, 8vw, 6rem) 5%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -190,6 +217,51 @@
             height: 4px;
             background: linear-gradient(90deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
             border-radius: 2px;
+        }
+
+        .countdown-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 1.5rem;
+            color: var(--ghana-red);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--ghana-green);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .event-card {
@@ -241,45 +313,123 @@
             font-size: clamp(1rem, 2.5vw, 1.15rem);
             color: #555;
             line-height: 1.8;
-            margin: 1.5rem 0;
+            margin: 0.5rem 0 1.5rem 0;
         }
 
-        .event-details {
+        .gallery-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .detail-item {
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-        }
-
-        .detail-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--ghana-red), var(--ghana-yellow));
-            border-radius: 12px;
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
-        .detail-content h3 {
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .map-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+
+        .map-wrapper {
+            border-radius: 15px;
+            overflow: hidden;
+            height: 400px;
+            margin-top: 1.5rem;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem;
+            background: white;
+            border: none;
+            text-align: left;
             font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
+            font-weight: 600;
             color: var(--ghana-black);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
         }
 
-        .detail-content p {
-            color: #8d7e5f;
-            font-size: 0.95rem;
-            line-height: 1.6;
+        .faq-question:hover {
+            background: #f8f9fa;
+            color: var(--ghana-red);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--ghana-red);
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer-content {
+            padding: 0 1.5rem 1.5rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
         }
 
         .info-grid {
@@ -317,8 +467,8 @@
         }
 
         .contact-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-                        url('background_down.jpeg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                        url('background_down.jpeg') center/cover no-repeat fixed;
             color: white;
             text-align: center;
             padding: clamp(3rem, 6vw, 5rem) 5%;
@@ -369,7 +519,7 @@
             font-size: 0.95rem;
         }
         
-        #event, #community {
+        #event, #community, #gallery, #faq {
             background-color: #f8eab2;
         }
 
@@ -392,7 +542,6 @@
             margin-right: 0.5rem;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -435,7 +584,7 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--ghana-green), var(--ghana-yellow));
+            background: #333;
             padding: 2rem;
             color: white;
             position: relative;
@@ -545,7 +694,6 @@
             margin-bottom: 1rem;
         }
         
-        /* Mobile Menu Styles */
         @media (max-width: 768px) {
             .menu-toggle {
                 display: flex;
@@ -567,11 +715,12 @@
             }
 
             .nav-links.active {
-                max-height: 400px;
+                max-height: 600px;
             }
 
             .nav-links li {
                 border-bottom: 1px solid #f0f0f0;
+                width: 100%;
             }
 
             .nav-links a {
@@ -580,16 +729,13 @@
                 font-size: 1.1rem;
             }
 
+            .language-switcher {
+                margin: 1rem 5%;
+                width: auto;
+            }
+
             .logo {
                 height: 40px;
-            }
-
-            .event-details {
-                grid-template-columns: 1fr;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
             }
 
             .section {
@@ -604,14 +750,32 @@
                 margin: 10% auto;
                 width: 95%;
             }
-                        /* Mobile background adjustments */
+
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-item {
+                min-width: 70px;
+            }
+
+            .countdown-number {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
             .hero {
-                background-position: center 80%;
+                background-position: center 30%;
+                background-attachment: scroll;
                 min-height: 80vh;
             }
             
             .contact-section {
-                background-position: center 50%;
+                background-position: center 40%;
+                background-attachment: scroll;
                 padding: clamp(4rem, 8vw, 6rem) 5%;
             }
         }
@@ -619,10 +783,6 @@
         @media (min-width: 769px) and (max-width: 1024px) {
             .nav-content {
                 padding: 0 2rem;
-            }
-
-            .event-details {
-                grid-template-columns: repeat(2, 1fr);
             }
 
             .info-grid {
@@ -648,16 +808,22 @@
 <body>
     <nav class="nav" role="navigation" aria-label="Main navigation">
         <div class="nav-content">
-            <img src="logo_white.jpg" alt="Hunghanians Logo" class="logo">
+            <img src="logo_new.jpg" alt="Hunghanians Logo" class="logo">
             <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <ul class="nav-links" id="navLinks" role="menubar">
-                <li role="none"><a href="#home" role="menuitem">Home</a></li>
-                <li role="none"><a href="#event" role="menuitem">Event</a></li>
-                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
+                <li role="none"><a href="#home" role="menuitem" class="translate" data-en="Home" data-hu="Főoldal">Home</a></li>
+                <li role="none"><a href="#event" role="menuitem" class="translate" data-en="Event" data-hu="Esemény">Event</a></li>
+                <li role="none"><a href="#gallery" role="menuitem" class="translate" data-en="Gallery" data-hu="Galéria">Gallery</a></li>
+                <li role="none"><a href="#faq" role="menuitem" class="translate" data-en="FAQ" data-hu="GYIK">FAQ</a></li>
+                <li role="none"><a href="#contact" role="menuitem" class="translate" data-en="Contact" data-hu="Kapcsolat">Contact</a></li>
+                <li role="none" class="language-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="hu">HU</button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -665,103 +831,178 @@
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Akwaaba</h1>
-            <p>Celebrating Ghanaian Culture & Community in Hungary</p>
-            <a href="#event" class="cta-button">Discover Our Next Event</a>
+            <p class="translate" data-en="Celebrating Ghanaian Culture & Community in Hungary" data-hu="Ghánai kultúra és közösség ünneplése Magyarországon">Celebrating Ghanaian Culture & Community in Hungary</p>
+            <a href="#event" class="cta-button translate" data-en="Discover Our Next Event" data-hu="Fedezd fel a következő eseményünket">Discover Our Next Event</a>
         </div>
     </section>
 
     <section class="section" id="event">
-        <h2 class="section-title">Upcoming Event</h2>
+        <h2 class="section-title translate" data-en="Upcoming Event" data-hu="Közelgő események">Upcoming Event</h2>
+        
+        <div class="countdown-container">
+            <h3 class="countdown-title translate" data-en="Event Starts In:" data-hu="Az esemény kezdete:">Event Starts In:</h3>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">0</span>
+                    <span class="countdown-label translate" data-en="Days" data-hu="Nap">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">0</span>
+                    <span class="countdown-label translate" data-en="Hours" data-hu="Óra">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span class="countdown-label translate" data-en="Minutes" data-hu="Perc">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">0</span>
+                    <span class="countdown-label translate" data-en="Seconds" data-hu="Másodperc">Seconds</span>
+                </div>
+            </div>
+        </div>
+
         <div class="event-card">
             <div class="event-header">
                 <div>
-                    <h3 class="event-title">Get Together 2026</h3>
-                    <p class="event-date">August 8-9, 2026</p>
+                    <h3 class="event-title translate" data-en="Get Together 2026" data-hu="Ghánai találkozó 2026">Get Together 2026</h3>
+                    <p class="event-date translate" data-en="August 8-9, 2026" data-hu="2026. augusztus 8-9.">August 8-9, 2026</p>
                 </div>
             </div>
-            <p class="event-description">
-                Hello dear friend!<br>
-                <br>
-                Join us for our <strong>annual Ghanaian community gathering in Hungary</strong>, where we come together to celebrate our roots, culture and friendship.<br>
-                Let's share memories, good food, music and laughter - and make new ones along the way!
-            </p>
-            <br>
-            <p class="event-location-date">
-                📍 <strong>Location:</strong> Inárcs, Szőlőhegy, 2365 (KEMP)<br>
-                📅 <strong>Date:</strong> August 8–9, 2026<br>
-                💰 <strong>Participation fee:</strong><br>
-                – Adults: 10,000 HUF / person<br>
-                – Children (ages 6–14): 5,000 HUF / person<br>
+            <p class="event-description translate" data-en="Hello dear friend! If you'd like to take part in the Ghanaian Get Together Party, please fill out this 3-minute registration form. It's important to complete it, as this information helps us plan food and drinks for the event." data-hu="Kedves érdeklődő! Ha szeretnél részt venni a ghánai összejövetelen, kérlek, töltsd ki ezt a 3 perces regisztrációs űrlapot. Fontos, hogy kitöltsd, mert ezek az információk segítenek nekünk az eseményre szükséges ételek és italok megtervezésében.">
+                Hello dear friend! If you'd like to take part in the Ghanaian Get Together Party, please fill out this 3-minute registration form. It's important to complete it, as this information helps us plan food and drinks for the event.
             </p>
 
-            <p class="event-description">
-                <strong>Important!</strong><br>
-                In previous years, food and drink quantities were not always sufficient for everyone. To make sure there's enough food for all participants this year, <strong>attandance is only possible with prior registration and payment</strong>.<br>
-                Bring your family, your friends and your Ghanaian spirit - we can't wait to see you all again! ❤️💛💚
+            <p class="event-location-date translate" data-en="📍 Location: Inárcs, Szőlőhegy, 2365 (KEMP)" data-hu="📍 Helyszín: Inárcs, Szőlőhegy, 2365 (KEMP)">
+                📍 Location: Inárcs, Szőlőhegy, 2365 (KEMP)
+            </p>
+
+            <p class="event-description translate" data-en="💰 Participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event." data-hu="💰 Részvételi díj: Felnőttek: 10,000 HUF / fő | Gyerekek (6-14 évesek): 5,000 HUF / fő. A részvételi díjat banki átutalással kell befizetni a regisztrációt követő 5 napon belül — sajnos fizetés nélkül nem tudjuk megerősíteni a résztvételedet az eseményen.">
+            💰 Participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event.
             </p>
 
             <div class="event-buttons">
-                <a href="https://docs.google.com/forms/d/1s4tyGlh01djRyoiZPimXUjb_PSEqfbLgj7vmx87SHZI/preview" target="_blank" rel="noopener noreferrer" class="contact-button event-button" aria-label="Register for the event">
-                    <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Register here
+                <a href="https://docs.google.com/forms/d/1s4tyGlh01djRyoiZPimXUjb_PSEqfbLgj7vmx87SHZI/preview" target="_blank" rel="noopener noreferrer" class="contact-button event-button translate" aria-label="Register for the event" data-en="Register here" data-hu="Regisztráció">
+                    <i class="fa-solid fa-user-plus" aria-hidden="true"></i> <span class="translate" data-en="Register here" data-hu="Regisztráció">Register here</span>
                 </a>
-                <a href="https://facebook.com/events/your-event-id" target="_blank" rel="noopener noreferrer" class="contact-button event-button" aria-label="View event on Facebook">
-                    <i class="fab fa-facebook-f" aria-hidden="true"></i> View Facebook event
+                <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Ffb.me%2F1Qon1Y6aocukdgI&h=AT0nf58AfybpMsZ5IpuSuSh_Ak6UT4QMrHdkBd4im_Ck_sMgjkVJr2LgtHCatZm_VoJ3iL4LXsnC_0EOF5JVCzY6i3GnKhEIRnALcLDZgnoRu3T0N493BNCIXpfJyhd4POgI1w" target="_blank" rel="noopener noreferrer" class="contact-button event-button translate" aria-label="View event on Facebook" data-en="View Facebook event" data-hu="Facebook esemény">
+                    <i class="fab fa-facebook-f" aria-hidden="true"></i> <span class="translate" data-en="View Facebook event" data-hu="Facebook esemény">View Facebook event</span>
                 </a>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-container">
+            <h3 class="translate" data-en="📍 Event Location" data-hu="📍 Esemény helyszíne" style="font-size: 1.5rem; color: var(--ghana-red); margin-bottom: 1rem;">📍 Event Location</h3>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10828.633112898493!2d19.3070943!3d47.2721604!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474193b4de4be4ed%3A0x156524f9b53e990b!2sKelet-Eur%C3%B3pa%20Misszi%C3%B3!5e0!3m2!1sen!2shu!4v1761596276211!5m2!1sen!2shu" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>
 
+    <section class="section" id="gallery">
+        <h2 class="section-title translate" data-en="Gallery" data-hu="Galéria">Gallery</h2>
+        <div class="gallery-container">
+            <p class="translate" data-en="Memories from our previous Get Together events" data-hu="Emlékképek korábbi ghánai találkozókról" style="text-align: center; color: #555; margin-bottom: 1rem;">Memories from our previous Get Together events</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="image1.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="image2.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="image3.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="image4.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="image5.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="image6.jpg" alt="Photo 1">
+                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="faq">
+        <h2 class="section-title translate" data-en="Frequently Asked Questions" data-hu="Gyakran Ismételt Kérdések">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="translate" data-en="TBA" data-hu="TBA">TBA</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content translate" data-en="TBA" data-hu="TBA">
+                        TBA
+                    </div>
+                </div>
+            </div>
+    </section>
+
     <section class="section" id="community">
-        <h2 class="section-title">Community</h2>
+        <h2 class="section-title translate" data-en="Community" data-hu="Közösség">Community</h2>
         <div class="info-grid">
             <div class="info-card">
-                <h3>🇬🇭 Our history</h3>
-                <p>Hunghanians is a community connecting Ghanaians and their descendants living in Hungary. We celebrate our rich culture, support each other, and create a home away from home.</p>
+                <h3 class="translate" data-en="🇬🇭 Our History" data-hu="🇬🇭 Történetünk">🇬🇭 Our History</h3>
+                <p class="translate" data-en="TBA" data-hu="TBA">
+                    TBA
+                </p>
             </div>
             <div class="info-card">
-                <h3>🎉 Annual Get Together Party</h3>
-                <p>Our annual Get Together Party is the center of our community's life in Hungary</p>
+                <h3 class="translate" data-en="🎉 Annual Get Together Party" data-hu="🎉 Éves Ghánai Találkozó">🎉 Annual Get Together Party</h3>
+                <p class="translate" data-en="Our annual Get Together Party is the center of our community's life in Hungary." data-hu="Az éves ghánai találkozó közösségünk életének központja Magyarországon.">
+                    Our annual Get Together Party is the center of our community's life in Hungary.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="contact-section" id="contact">
-        <h2>Stay Connected</h2>
-        <p>Join us and never miss an update on our event!</p>
-        <button class="contact-button" id="contactBtn" aria-label="Open contact form">Contact Us</button>
+        <h2 class="translate" data-en="Stay Connected" data-hu="Maradjunk kapcsolatban">Stay Connected</h2>
+        <p class="translate" data-en="Join us and never miss an update on our event!" data-hu="Csatlakozz hozzánk, és ne maradj le egyetlen értesítésről sem!">Join us and never miss an update on our event!</p>
+        <button class="contact-button" id="contactBtn" aria-label="Open contact form"><span class="translate" data-en="Contact Us" data-hu="Lépj velünk kapcsolatba">Contact Us</span></button>
     </section>
 
     <!-- Contact Modal -->
     <div id="contactModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">Get in Touch</h2>
+                <h2 id="modalTitle" class="translate" data-en="Get in Touch" data-hu="Lépj velünk kapcsolatba">Get in Touch</h2>
                 <button class="close" id="closeModal" aria-label="Close contact form">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="contactForm">
                     <div class="form-group">
-                        <label for="name">Name *</label>
+                        <label for="name" class="translate" data-en="Name *" data-hu="Név *">Name *</label>
                         <input type="text" id="name" name="name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email *</label>
+                        <label for="email" class="translate" data-en="Email *" data-hu="Email *">Email *</label>
                         <input type="email" id="email" name="email" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="subject">Subject *</label>
+                        <label for="subject" class="translate" data-en="Subject *" data-hu="Tárgy *">Subject *</label>
                         <input type="text" id="subject" name="subject" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="message">Message *</label>
+                        <label for="message" class="translate" data-en="Message *" data-hu="Üzenet *">Message *</label>
                         <textarea id="message" name="message" required aria-required="true"></textarea>
                     </div>
-                    <button type="submit" class="submit-button">Send Message</button>
+                    <button type="submit" class="submit-button translate" data-en="Send Message" data-hu="Üzenet küldése">Send Message</button>
                 </form>
                 <div class="success-message" id="successMessage">
                     <i class="fas fa-check-circle" aria-hidden="true"></i>
-                    <h3>Message Sent!</h3>
-                    <p>Thank you for contacting us. We'll get back to you soon!</p>
+                    <h3 class="translate" data-en="Message Sent!" data-hu="Üzenet elküldve!">Message Sent!</h3>
+                    <p class="translate" data-en="Thank you for contacting us. We'll get back to you soon!" data-hu="Köszönjük, hogy írtál nekünk. Hamarosan felvesszük veled a kapcsolatot!">Thank you for contacting us. We'll get back to you soon!</p>
                 </div>
             </div>
         </div>
@@ -772,6 +1013,53 @@
     </footer>
 
     <script>
+        let currentLang = 'en';
+
+        // Language Switcher
+        const langButtons = document.querySelectorAll('.lang-btn');
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLang = btn.dataset.lang;
+                translatePage(currentLang);
+            });
+        });
+
+        function translatePage(lang) {
+            const elements = document.querySelectorAll('.translate');
+            elements.forEach(el => {
+                const translation = el.getAttribute(`data-${lang}`);
+                if (translation) {
+                    el.textContent = translation;
+                }
+            });
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            const eventDate = new Date('August 8, 2026 00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+
+            if (distance < 0) {
+                document.querySelector('.countdown-container').innerHTML = '<h3 style="color: var(--ghana-red);">Event is Live!</h3>';
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
         // Mobile menu toggle
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
@@ -826,6 +1114,27 @@
             }
         });
 
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const wasActive = faqItem.classList.contains('active');
+                
+                // Close all FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-question').classList.remove('active');
+                });
+                
+                // Open clicked FAQ if it wasn't active
+                if (!wasActive) {
+                    faqItem.classList.add('active');
+                    question.classList.add('active');
+                }
+            });
+        });
+
         // Modal functionality
         const modal = document.getElementById('contactModal');
         const contactBtn = document.getElementById('contactBtn');
@@ -836,7 +1145,6 @@
         contactBtn.addEventListener('click', () => {
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            // Focus on first form field for accessibility
             setTimeout(() => document.getElementById('name').focus(), 100);
         });
 
@@ -862,18 +1170,14 @@
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Here you would normally send the form data to a server
-            // For now, we'll just show the success message
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
             
             console.log('Form data:', data);
             
-            // Show success message
             contactForm.style.display = 'none';
             successMessage.style.display = 'block';
             
-            // Close modal after 3 seconds
             setTimeout(() => {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
