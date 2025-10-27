@@ -331,25 +331,100 @@
             margin-top: 2rem;
         }
 
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            aspect-ratio: 1;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            background: linear-gradient(135deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+           .gallery-item {
+                position: relative;
+                overflow: hidden;
+                border-radius: 15px;
+                aspect-ratio: 1;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                background: #f0f0f0;
+            }
+            
+            .gallery-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+            
+           .gallery-item span {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+                color: white;
+                padding: 1rem;
+                font-size: 1rem;
+                font-weight: 600;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .gallery-item:hover span {
+                opacity: 1;
+            }
+            
+           .gallery-item:hover {
+                transform: scale(1.05);
+            }
 
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
+        .image-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.3s ease;
+}
+
+.image-modal-content {
+    position: relative;
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: translateY(-50%) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.image-modal .close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.image-modal .close:hover {
+    background: rgba(206, 17, 38, 0.8);
+}
 
         .map-container {
             background: white;
@@ -903,32 +978,32 @@
         <h2 class="section-title translate" data-en="Gallery" data-hu="Galéria">Gallery</h2>
         <div class="gallery-container">
             <p class="translate" data-en="Memories from our previous Get Together events" data-hu="Emlékképek korábbi ghánai találkozókról" style="text-align: center; color: #555; margin-bottom: 1rem;">Memories from our previous Get Together events</p>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="image1.jpg" alt="Photo 1">
-                    <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
-                </div>
-                <div class="gallery-item">
-                    <img src="image2.jpg" alt="Photo 2">
-                    <span class="translate" data-en="Photo 2" data-hu="Kép 2">Photo 2</span>
-                </div>
-                <div class="gallery-item">
-                    <img src="image3.jpg" alt="Photo 3">
-                    <span class="translate" data-en="Photo 3" data-hu="Kép 3">Photo 3</span>
-                </div>
-                <div class="gallery-item">
-                    <img src="image4.jpg" alt="Photo 4">
-                    <span class="translate" data-en="Photo 4" data-hu="Kép 4">Photo 4</span>
-                </div>
-                <div class="gallery-item">
-                    <img src="image5.jpg" alt="Photo 5">
-                    <span class="translate" data-en="Photo 5" data-hu="Kép 5">Photo 5</span>
-                </div>
-                <div class="gallery-item">
-                    <img src="image6.jpg" alt="Photo 6">
-                    <span class="translate" data-en="Photo 6" data-hu="Kép 6">Photo 6</span>
-                </div>
-            </div>
+           <div class="gallery-grid">
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image1.jpg" alt="Photo 1">
+        <span class="translate" data-en="Photo 1" data-hu="Kép 1">Photo 1</span>
+    </div>
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image2.jpg" alt="Photo 2">
+        <span class="translate" data-en="Photo 2" data-hu="Kép 2">Photo 2</span>
+    </div>
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image3.jpg" alt="Photo 3">
+        <span class="translate" data-en="Photo 3" data-hu="Kép 3">Photo 3</span>
+    </div>
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image4.jpg" alt="Photo 4">
+        <span class="translate" data-en="Photo 4" data-hu="Kép 4">Photo 4</span>
+    </div>
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image5.jpg" alt="Photo 5">
+        <span class="translate" data-en="Photo 5" data-hu="Kép 5">Photo 5</span>
+    </div>
+    <div class="gallery-item" onclick="openImageModal(this)">
+        <img src="image6.jpg" alt="Photo 6">
+        <span class="translate" data-en="Photo 6" data-hu="Kép 6">Photo 6</span>
+    </div>
+</div>
         </div>
     </section>
 
@@ -1008,6 +1083,12 @@
         </div>
     </div>
 
+    <!-- Image Modal -->
+<div id="imageModal" class="image-modal">
+    <span class="close" onclick="closeImageModal()">&times;</span>
+    <img class="image-modal-content" id="modalImage" alt="Enlarged image">
+</div>
+    
     <footer role="contentinfo">
         <p>&copy; 2025 Hunghanians - Roots. Connect.</p>
     </footer>
@@ -1197,6 +1278,38 @@
                 contactForm.reset();
             }
         });
+
+        // Image Modal functionality
+function openImageModal(element) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const img = element.querySelector('img');
+    
+    modal.style.display = 'block';
+    modalImg.src = img.src;
+    modalImg.alt = img.alt;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close image modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
+
+// Close image modal when clicking outside the image
+document.getElementById('imageModal').addEventListener('click', (e) => {
+    if (e.target.id === 'imageModal') {
+        closeImageModal();
+    }
+});
     </script>
 </body>
 </html>
