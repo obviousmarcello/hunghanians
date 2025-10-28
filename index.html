@@ -645,6 +645,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideDown 0.4s ease;
             overflow: hidden;
+            position: relative;
         }
 
         @keyframes slideDown {
@@ -855,13 +856,35 @@
             }
         }
 
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .nav-content {
-                padding: 0 2rem;
-            }
+            @media (min-width: 769px) and (max-width: 1024px) {
+                .nav-content {
+                    padding: 0 2rem;
+                }
+            
+                .info-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                
+                .modal-content {
+                    margin: 8% auto;
+                    width: 85%;
+                    max-width: 550px;
+                }
+            }   
 
-            .info-grid {
-                grid-template-columns: repeat(2, 1fr);
+                @media (min-width: 1025px) and (max-width: 1440px) {
+            .modal-content {
+                margin: 10% auto;
+                width: 50%;
+                max-width: 600px;
+            }
+            
+            .modal-header {
+                padding: 2.5rem;
+            }
+            
+            .modal-body {
+                padding: 2.5rem;
             }
         }
 
@@ -1055,18 +1078,18 @@
                 <button class="close" id="closeModal" aria-label="Close contact form">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="contactForm">
+                <form id="contactForm" action="https://formspree.io/f/mnnopzyq" method="POST">
                     <div class="form-group">
                         <label for="name" class="translate" data-en="Name *" data-hu="Név *">Name *</label>
                         <input type="text" id="name" name="name" required aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="email" class="translate" data-en="Email *" data-hu="Email *">Email *</label>
-                        <input type="email" id="email" name="email" required aria-required="true">
+                        <input type="email" id="email" name="_replyto" required aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="subject" class="translate" data-en="Subject *" data-hu="Tárgy *">Subject *</label>
-                        <input type="text" id="subject" name="subject" required aria-required="true">
+                        <input type="text" id="subject" name="_subject" required aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="message" class="translate" data-en="Message *" data-hu="Üzenet *">Message *</label>
@@ -1247,15 +1270,28 @@
             }
         });
 
-        // Handle form submission
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-            
-            console.log('Form data:', data);
-            
+// Handle form submission with Formspree
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(contactForm);
+    const submitButton = contactForm.querySelector('.submit-button');
+    
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.textContent = currentLang === 'en' ? 'Sending...' : 'Küldés...';
+    
+    try {
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            // Show success message
             contactForm.style.display = 'none';
             successMessage.style.display = 'block';
             
@@ -1265,8 +1301,18 @@
                 contactForm.style.display = 'block';
                 successMessage.style.display = 'none';
                 contactForm.reset();
+                submitButton.disabled = false;
+                submitButton.textContent = currentLang === 'en' ? 'Send Message' : 'Üzenet küldése';
             }, 3000);
-        });
+        } else {
+            throw new Error('Form submission failed');
+        }
+    } catch (error) {
+        alert(currentLang === 'en' ? 'Oops! There was a problem sending your message. Please try again.' : 'Hoppá! Hiba történt az üzenet küldésekor. Kérlek, próbáld újra.');
+        submitButton.disabled = false;
+        submitButton.textContent = currentLang === 'en' ? 'Send Message' : 'Üzenet küldése';
+    }
+});
 
         // Keyboard accessibility for modal
         document.addEventListener('keydown', (e) => {
