@@ -904,27 +904,29 @@
     </style>
 </head>
 <body>
-    <nav class="nav" role="navigation" aria-label="Main navigation">
-        <div class="nav-content">
-            <img src="logo_new.jpg" alt="Hunghanians Logo" class="logo">
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks" role="menubar">
-                <li role="none"><a href="#home" role="menuitem" class="translate" data-en="Home" data-hu="Főoldal">Home</a></li>
-                <li role="none"><a href="#event" role="menuitem" class="translate" data-en="Event" data-hu="Esemény">Event</a></li>
-                <li role="none"><a href="#gallery" role="menuitem" class="translate" data-en="Gallery" data-hu="Galéria">Gallery</a></li>
-                <li role="none"><a href="#faq" role="menuitem" class="translate" data-en="FAQ" data-hu="GYIK">FAQ</a></li>
-                <li role="none"><a href="#contact" role="menuitem" class="translate" data-en="Contact" data-hu="Kapcsolat">Contact</a></li>
-                <li role="none" class="language-switcher">
-                    <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="hu">HU</button>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-content">
+        <img src="logo_new.jpg" alt="Hunghanians Logo" class="logo">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="navLinks" role="menubar">
+            <li role="none"><a href="#home" role="menuitem" class="translate" data-en="Home" data-hu="Főoldal">Home</a></li>
+            <li role="none"><a href="#event" role="menuitem" class="translate" data-en="Event" data-hu="Esemény">Event</a></li>
+            <li role="none"><a href="#gallery" role="menuitem" class="translate" data-en="Gallery" data-hu="Galéria">Gallery</a></li>
+            
+            <li role="none" style="display: none;"><a href="#faq" role="menuitem" class="translate" data-en="FAQ" data-hu="GYIK">FAQ</a></li>
+            
+            <li role="none"><a href="#contact" role="menuitem" class="translate" data-en="Contact" data-hu="Kapcsolat">Contact</a></li>
+            <li role="none" class="language-switcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="hu">HU</button>
+            </li>
+        </ul>
+    </div>
+</nav>
 
     <section class="hero" id="home">
         <div class="hero-content">
@@ -974,8 +976,8 @@
                 📍 Location: Inárcs, Szőlőhegy, 2365 (KEMP)
             </p>
 
-            <p class="event-description translate" data-en="💰 Participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event." data-hu="💰 Részvételi díj: Felnőttek: 10,000 HUF / fő | Gyerekek (6-14 évesek): 5,000 HUF / fő. A részvételi díjat banki átutalással kell befizetni a regisztrációt követő 5 napon belül — sajnos fizetés nélkül nem tudjuk megerősíteni a résztvételedet az eseményen.">
-            💰 Participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event.
+            <p class="event-description translate" data-en="💰 !EARLYBIRD! participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event. The earlybird fee is valid until March 31." data-hu="💰 !EARLYBIRD! részvételi díj: Felnőttek: 10,000 HUF / fő | Gyerekek (6-14 évesek): 5,000 HUF / fő. A részvételi díjat banki átutalással kell befizetni a regisztrációt követő 5 napon belül — sajnos fizetés nélkül nem tudjuk megerősíteni a résztvételedet az eseményen. Az earlybird részvételi díj március 31-ig érvényes.">
+            💰 !EARLYBIRD! participation fee: Adults: 10,000 HUF / person | Children (ages 6–14): 5,000 HUF / person. The participation fee must be paid by bank transfer within 5 days after registration — unfortunately, without payment, we won't be able to confirm your spot at the event. The earlybird fee is valid until March 31.
             </p>
 
             <div class="event-buttons">
@@ -1030,7 +1032,7 @@
         </div>
     </section>
 
-    <section class="section" id="faq">
+    <section class="section" id="faq" style="display: none;">
         <h2 class="section-title translate" data-en="Frequently Asked Questions" data-hu="Gyakran Ismételt Kérdések">Frequently Asked Questions</h2>
         <div class="faq-container">
             <div class="faq-item">
