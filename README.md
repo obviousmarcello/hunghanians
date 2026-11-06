@@ -23,7 +23,9 @@ index.html                 Main page (all copy, in English and Hungarian)
 ghana_hungary_event.html   Older event page, kept so existing links keep working
 assets/css/styles.css      Styles
 assets/js/main.js          Language switcher, countdown, gallery, dialogs, forms
-assets/images/             Photos and logos (gallery/ holds the thumbnails)
+assets/images/             Full-size photos, logos (logo-light/logo-dark.png, transparent)
+  gallery/                 Gallery thumbnails (1000×750)
+  hero/                    Hero (desktop + mobile crops) and contact-section backgrounds
 server/                    Express backend (API + static file server)
   event.json               Event dates, prices, capacity, registration on/off
 test/                      Backend tests (node:test)
@@ -35,11 +37,18 @@ test/                      Backend tests (node:test)
   `data-en="…"` / `data-hu="…"`. Update both attributes and the text between the tags.
   Only put these attributes on elements that contain plain text. If an element also has an icon,
   wrap the text in a `<span>` and put the attributes on the span.
-* **Gallery**: add the full-size photo to `assets/images/` and a 600×600 thumbnail to
+* **Gallery**: add the full-size photo to `assets/images/` and a 1000×750 thumbnail to
   `assets/images/gallery/`, for example:
-  `convert photo.jpg -auto-orient -resize 600x600^ -gravity center -extent 600x600 -strip -quality 70 thumb.jpg`
-* **Event dates and prices**: update `server/event.json`, and the `data-start` / `data-end`
-  attributes on `#countdown` in `index.html`, which the static site uses.
+  `convert photo.jpg -auto-orient -resize 1000x750^ -gravity center -extent 1000x750 -strip -quality 68 thumb.jpg`.
+  Then add a `<button class="gallery-item">` with an English and Hungarian caption. On desktop the grid has
+  4 columns: `gallery-item--feature` takes 2×2 cells and `gallery-item--wide` takes 2×1, so arrange them to fill
+  complete rows. On phones the gallery becomes a swipeable strip.
+* **Design tokens**: colours, the fluid type scale (`--step-*`) and spacing (`--space-*`) are defined at the top
+  of `assets/css/styles.css`. Use them instead of fixed sizes.
+* **Scroll animations**: add `class="reveal"` to any element to make it fade in as it scrolls into view.
+* **Event dates and prices**: update `server/event.json`, and in `index.html` the `data-start` / `data-end`
+  attributes on `#countdown`, `data-earlybird-until` on `#priceCard` and the amounts in the price table. The
+  static site uses these, while the backend overrides them from `event.json`.
 
 ## Running the backend
 
