@@ -47,7 +47,8 @@ if (process.env.TEST_MYSQL_URL) {
         async () => {
             // Start every test from an empty schema; this also exercises the migrations.
             const { default: mysql } = await import('mysql2/promise');
-            const conn = await mysql.createConnection(mysqlConfig);
+            const { host, port, user, password, database } = mysqlConfig;
+            const conn = await mysql.createConnection({ host, port, user, password, database });
             await conn.query('DROP TABLE IF EXISTS messages, registrations, schema_migrations');
             await conn.end();
             return openStorage(mysqlConfig);
