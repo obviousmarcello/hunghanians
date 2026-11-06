@@ -58,11 +58,13 @@ The easiest way, from a phone or a computer, needs no software:
    * from a computer, drag in a **whole folder** (e.g. `get-together-2025`): its name becomes the album;
    * or first open an existing album folder inside `photos/inbox/` and upload there;
    * photos uploaded directly into `photos/inbox/` (the usual case from a phone) go into the album "Photos".
+     Photos uploaded to the top level of the repository by mistake are picked up too and go into "Photos".
 3. Add the photos (GitHub accepts up to 100 files and 25 MB per file in one upload) and commit to `main`.
 4. The **Gallery photos** action (Actions tab) runs automatically. For each photo it:
    * converts iPhone HEIC photos, rotates them upright, and **removes location and other metadata**;
    * creates three web-sized WebP versions in `assets/images/gallery/` (about 0.5 MB in total per photo);
-   * adds the photo to `assets/data/gallery.json`, sorted newest first by the date it was taken;
+   * adds the photo to `assets/data/gallery.json`, sorted newest first by the date it was taken
+     (photos without a date go after the dated ones);
    * deletes the original from the inbox and commits the result. The site updates a few minutes later.
 
    The same photo uploaded twice is skipped. Files it can't read (videos, for example) stay in the inbox and

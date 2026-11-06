@@ -5,7 +5,23 @@ name: Gallery photos
 on:
   push:
     branches: [ "main" ]
-    paths: [ "photos/inbox/**" ]
+    # Also photos uploaded to the top level of the repository by mistake.
+    paths:
+      - "photos/inbox/**"
+      - "*.jpg"
+      - "*.JPG"
+      - "*.jpeg"
+      - "*.JPEG"
+      - "*.png"
+      - "*.PNG"
+      - "*.heic"
+      - "*.HEIC"
+      - "*.heif"
+      - "*.HEIF"
+      - "*.webp"
+      - "*.avif"
+      - "*.tif"
+      - "*.tiff"
   workflow_dispatch:
 
 permissions:
@@ -44,7 +60,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A assets/images/gallery assets/data/gallery.json photos/inbox
+          # -A also records originals removed from the top level of the repository.
+          git add -A
           if git diff --cached --quiet; then
             echo "Nothing new to commit."
             exit 0

@@ -5,7 +5,8 @@
  *   npm run gallery
  *
  * Takes every photo in photos/inbox/ (optionally in a sub-folder per album,
- * e.g. photos/inbox/get-together-2025/IMG_1234.jpg), and for each one:
+ * e.g. photos/inbox/get-together-2025/IMG_1234.jpg), plus any photo uploaded
+ * to the top level of the repository by mistake, and for each one:
  *
  *   - converts HEIC/HEIF (iPhone) photos with `heif-convert` (libheif-examples),
  *   - rotates it upright and removes all metadata (including GPS location),
@@ -149,20 +150,26 @@ async function main() {
 
     const manifest = await loadManifest();
     const known = new Set(manifest.photos.map((p) => p.id));
-    const files = await walk(INBOX);
+    // Photos uploaded to the top level of the repository by mistake (GitHub's
+    // "Upload files" puts them in whatever folder is open) are handled too.
+    const rootPhotos = (await fs.readdir(ROOT, { withFileTypes: true }))
+        .filter((e) => e.isFile() && IMAGE_EXT.has(path.extname(e.name).toLowerCase()))
+        .map((e) => path.join(ROOT, e.name));
+    const files = [...(await walk(INBOX)), ...rootPhotos];
     let added = 0;
     let skipped = 0;
     const failed = [];
 
     for (const file of files) {
-        const rel = path.relative(INBOX, file);
+        const fromRoot = path.dirname(file) === ROOT;
+        const rel = fromRoot ? path.basename(file) : path.relative(INBOX, file);
         if (!IMAGE_EXT.has(path.extname(file).toLowerCase())) {
             console.warn(`skip  ${rel} (not a supported image type)`);
             failed.push(rel);
             continue;
         }
 
-        const folder = path.dirname(rel) === '.' ? null : rel.split(path.sep)[0];
+        const folder = fromRoot || path.dirname(rel) === '.' ? null : rel.split(path.sep)[0];
         const album = folder ? slugify(folder) : DEFAULT_ALBUM;
         if (!manifest.albums.some((a) => a.id === album)) {
             const title = folder ? titleFromFolder(folder) : null;
@@ -187,11 +194,18 @@ async function main() {
         }
     }
 
-    // Newest first: by date taken, then by date added.
-    manifest.photos.sort((a, b) =>
-        (b.takenAt || b.addedAt).localeCompare(a.takenAt || a.addedAt),
-    );
-    await fs.writeFile(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
+    // Only touch the photo list when something was added, so runs without new
+    // photos don't produce a commit.
+    if (added) {
+        // Photos with a date taken first, newest first; then undated ones, newest added first.
+        manifest.photos.sort((a, b) => {
+            if (a.takenAt && b.takenAt) return b.takenAt.localeCompare(a.takenAt);
+            if (a.takenAt || b.takenAt) return a.takenAt ? -1 : 1;
+            return b.addedAt.localeCompare(a.addedAt);
+        });
+        manifest.albums = manifest.albums.filter((a) => manifest.photos.some((p) => p.album === a.id));
+        await fs.writeFile(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
+    }
 
     // Remove album folders left empty in the inbox.
     for (const entry of await fs.readdir(INBOX, { withFileTypes: true }).catch(() => [])) {
