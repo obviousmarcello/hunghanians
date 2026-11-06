@@ -1,0 +1,127 @@
+{
+  "albums": [
+    {
+      "id": "get-together",
+      "title": {
+        "en": "Get Together",
+        "hu": "Ghánai találkozó"
+      }
+    }
+  ],
+  "photos": [
+    {
+      "id": "99c2573db0ed",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1440,
+      "color": "#b8c8c8",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:24.355Z",
+      "featured": 1,
+      "caption": {
+        "en": "The whole family together",
+        "hu": "Az egész család együtt"
+      },
+      "src": {
+        "480": "assets/images/gallery/99c2573db0ed-480.webp",
+        "960": "assets/images/gallery/99c2573db0ed-960.webp",
+        "1920": "assets/images/gallery/99c2573db0ed-1920.webp"
+      }
+    },
+    {
+      "id": "b0ecd183c701",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1440,
+      "color": "#383838",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:23.020Z",
+      "featured": 2,
+      "caption": {
+        "en": "Drumming and dance",
+        "hu": "Dobolás és tánc"
+      },
+      "src": {
+        "480": "assets/images/gallery/b0ecd183c701-480.webp",
+        "960": "assets/images/gallery/b0ecd183c701-960.webp",
+        "1920": "assets/images/gallery/b0ecd183c701-1920.webp"
+      }
+    },
+    {
+      "id": "2cbf6c50a2a6",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1082,
+      "color": "#181818",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:23.514Z",
+      "featured": 3,
+      "caption": {
+        "en": "Dance circle",
+        "hu": "Táncos kör"
+      },
+      "src": {
+        "480": "assets/images/gallery/2cbf6c50a2a6-480.webp",
+        "960": "assets/images/gallery/2cbf6c50a2a6-960.webp",
+        "1920": "assets/images/gallery/2cbf6c50a2a6-1920.webp"
+      }
+    },
+    {
+      "id": "46d4cada3fff",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1440,
+      "color": "#181818",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:25.443Z",
+      "featured": 4,
+      "caption": {
+        "en": "Cooking together",
+        "hu": "Közös főzés"
+      },
+      "src": {
+        "480": "assets/images/gallery/46d4cada3fff-480.webp",
+        "960": "assets/images/gallery/46d4cada3fff-960.webp",
+        "1920": "assets/images/gallery/46d4cada3fff-1920.webp"
+      }
+    },
+    {
+      "id": "fa7463bab5e2",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1080,
+      "color": "#080808",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:22.243Z",
+      "featured": 5,
+      "caption": {
+        "en": "Good times on the lawn",
+        "hu": "Jó hangulat a réten"
+      },
+      "src": {
+        "480": "assets/images/gallery/fa7463bab5e2-480.webp",
+        "960": "assets/images/gallery/fa7463bab5e2-960.webp",
+        "1920": "assets/images/gallery/fa7463bab5e2-1920.webp"
+      }
+    },
+    {
+      "id": "bb58a1a0c91e",
+      "album": "get-together",
+      "width": 1920,
+      "height": 1440,
+      "color": "#080808",
+      "takenAt": null,
+      "addedAt": "2026-11-06T21:32:24.940Z",
+      "featured": 6,
+      "caption": {
+        "en": "Friends at the Get Together",
+        "hu": "Barátok a találkozón"
+      },
+      "src": {
+        "480": "assets/images/gallery/bb58a1a0c91e-480.webp",
+        "960": "assets/images/gallery/bb58a1a0c91e-960.webp",
+        "1920": "assets/images/gallery/bb58a1a0c91e-1920.webp"
+      }
+    }
+  ]
+}

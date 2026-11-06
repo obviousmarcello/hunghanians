@@ -1,0 +1,61 @@
+name: Gallery photos
+
+# When photos are uploaded to photos/inbox/ on main, resize them, add them to
+# assets/data/gallery.json and remove the originals (see scripts/gallery.mjs).
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "photos/inbox/**" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Never process two uploads at the same time; queue them instead.
+concurrency:
+  group: gallery-photos
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install HEIC (iPhone photo) support
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends libheif-examples libheif-plugin-libde265
+
+      - run: npm ci
+
+      - name: Process photos
+        id: gallery
+        continue-on-error: true
+        run: npm run gallery
+
+      # Commit whatever was processed, even if some photos failed.
+      - name: Commit the new gallery photos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/images/gallery assets/data/gallery.json photos/inbox
+          if git diff --cached --quiet; then
+            echo "Nothing new to commit."
+            exit 0
+          fi
+          added=$(git diff --cached --name-only --diff-filter=A -- 'assets/images/gallery/*-1920.webp' | wc -l)
+          git commit -m "Add ${added} photo(s) to the gallery"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Report photos that could not be processed
+        if: steps.gallery.outcome == 'failure'
+        run: |
+          echo "::error::Some files in photos/inbox could not be processed. Open the 'Process photos' step for details; the files were left in photos/inbox."
+          exit 1

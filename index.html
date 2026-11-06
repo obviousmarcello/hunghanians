@@ -206,32 +206,12 @@
                     <h2 class="section-title" data-en="Memories from previous Get Togethers" data-hu="Emlékek a korábbi találkozókról">Memories from previous Get Togethers</h2>
                 </header>
 
-                <!-- Thumbnails: assets/images/gallery (1000×750). data-full: the photo shown in the viewer. -->
-                <div class="gallery-grid" id="galleryGrid">
-                    <button type="button" class="gallery-item gallery-item--feature reveal" data-full="assets/images/image4.jpg">
-                        <img src="assets/images/gallery/image4-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="The whole family together" data-hu="Az egész család együtt">The whole family together</span>
-                    </button>
-                    <button type="button" class="gallery-item reveal" data-full="assets/images/image2.jpg">
-                        <img src="assets/images/gallery/image2-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="Drumming and dance" data-hu="Dobolás és tánc">Drumming and dance</span>
-                    </button>
-                    <button type="button" class="gallery-item reveal" data-full="assets/images/image3.jpg">
-                        <img src="assets/images/gallery/image3-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="Dance circle" data-hu="Táncos kör">Dance circle</span>
-                    </button>
-                    <button type="button" class="gallery-item gallery-item--wide reveal" data-full="assets/images/image6.jpg">
-                        <img src="assets/images/gallery/image6-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="Cooking together" data-hu="Közös főzés">Cooking together</span>
-                    </button>
-                    <button type="button" class="gallery-item gallery-item--wide reveal" data-full="assets/images/image1.jpg">
-                        <img src="assets/images/gallery/image1-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="Good times on the lawn" data-hu="Jó hangulat a réten">Good times on the lawn</span>
-                    </button>
-                    <button type="button" class="gallery-item gallery-item--wide reveal" data-full="assets/images/image5.jpg">
-                        <img src="assets/images/gallery/image5-thumb.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
-                        <span class="gallery-caption" data-en="Friends at the Get Together" data-hu="Barátok a találkozón">Friends at the Get Together</span>
-                    </button>
+                <!-- Filled from assets/data/gallery.json (see README: "Adding photos"). -->
+                <div class="gallery-grid" id="galleryGrid" aria-live="polite"></div>
+                <div class="gallery-more">
+                    <a class="btn btn--ghost-light" href="gallery.html" id="galleryViewAll" hidden>
+                        <span data-en="View all photos" data-hu="Összes fotó">View all photos</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
         </section>

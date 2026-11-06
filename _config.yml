@@ -1,6 +1,8 @@
 # GitHub Pages / Jekyll: publish only the static site, never the backend.
 exclude:
   - server/
+  - scripts/
+  - photos/
   - test/
   - data/
   - node_modules/

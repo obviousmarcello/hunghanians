@@ -47,7 +47,8 @@ if (process.env.TEST_MYSQL_URL) {
         async () => {
             // Start every test from an empty schema; this also exercises the migrations.
             const { default: mysql } = await import('mysql2/promise');
-            const conn = await mysql.createConnection(mysqlConfig);
+            const { host, port, user, password, database } = mysqlConfig;
+            const conn = await mysql.createConnection({ host, port, user, password, database });
             await conn.query('DROP TABLE IF EXISTS messages, registrations, schema_migrations');
             await conn.end();
             return openStorage(mysqlConfig);
@@ -118,6 +119,16 @@ describe(`API (${backendName})`, () => {
             assert.equal(res.status, 200);
             assert.match(res.headers.get('content-security-policy'), /default-src 'self'/);
             assert.match(await res.text(), /Akwaaba/);
+        });
+
+        test('serves the gallery page and an uncached photo list', async () => {
+            const page = await request('/gallery.html');
+            assert.equal(page.status, 200);
+            assert.match(page.headers.get('content-security-policy'), /default-src 'self'/);
+            const list = await request('/assets/data/gallery.json');
+            assert.equal(list.status, 200);
+            assert.equal(list.headers.get('cache-control'), 'no-cache');
+            assert.ok(Array.isArray((await list.json()).photos));
         });
 
         test('serves assets', async () => {
