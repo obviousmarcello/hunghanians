@@ -70,12 +70,16 @@ npm start
 
 `npm run dev` restarts the server on file changes. Run `npm test` to run the API tests.
 
-Data is stored in SQLite at `data/hunghanians.db`, which git ignores. Back this file up.
+Locally, data is stored in SQLite at `data/hunghanians.db`, which git ignores. When MySQL settings are present
+(see below) the app uses MySQL instead and creates its tables automatically on first start.
 
 ### Configuration
 
 All settings are environment variables. See [`.env.example`](.env.example). The most important ones:
 
+* Database: `DATABASE_URL=mysql://user:pass@host:3306/db`, or `MYSQL_HOST`/`DB_HOST`, `MYSQL_USER`/`DB_USER`,
+  `MYSQL_PASSWORD`/`DB_PASSWORD`, `MYSQL_DATABASE`/`DB_NAME` (and optionally a port and `DB_SSL=true`).
+  Without them, SQLite is used.
 * `ADMIN_TOKEN`: enables the admin API (at least 16 characters).
 * `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`, …: outgoing email. Without them, emails are only logged.
   With Gmail, use an App Password.
@@ -122,6 +126,32 @@ Also available: `GET /api/admin/registrations` (JSON), `GET /api/admin/messages`
 `PATCH /api/admin/messages/:id` with `{"handled": true}`.
 
 ## Deployment
+
+### GoDaddy Node.js Hosting (current setup)
+
+GoDaddy runs the app as a Node.js 22 process from the GitHub repository and provides a managed MySQL
+database. Its disk should not be relied on for data, so **the app must use that MySQL database**.
+
+1. In the GoDaddy Node.js Hosting dashboard, the app is connected to this repository and the `main` branch.
+   If asked for commands: install `npm ci`, start `npm start`. There is no build step.
+2. Under the app's environment variables, set:
+   * `ADMIN_TOKEN`: a long random string (enables the admin API).
+   * `TRUST_PROXY=1`: GoDaddy's proxy sits in front of the app; without this, every visitor shares one rate limit.
+   * `ORGANIZER_EMAIL` and the `SMTP_*` / `MAIL_FROM` settings, so confirmation emails are actually sent.
+3. Database: GoDaddy adds the managed database's host, user, password and name as environment variables.
+   The app recognises `DATABASE_URL` and the common `MYSQL_*` / `DB_*` names. If GoDaddy uses other names,
+   add `DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/DATABASE` yourself with the same values
+   (URL-encode special characters in the password).
+4. Deploy, then check:
+   * The app log shows `Database: MySQL at … (from …)`. If it says `SQLite`, the database variables were not
+     recognised and registrations **will not be kept**. Fix step 3 before going live.
+   * `https://<your-app-address>/api/health` returns `{"status":"ok","database":"mysql"}`.
+5. Point the domain: attach `hunghanians.hu` to the app in GoDaddy and update DNS as GoDaddy instructs. Then
+   remove the custom domain from GitHub Pages (repository Settings → Pages) so the two don't compete.
+6. Back up the database regularly (for example with an export from GoDaddy's database tools), and download the
+   registrations CSV from the admin API before the event.
+
+### Other hosts
 
 * **Static only (current setup):** GitHub Pages serves the repository root. `_config.yml`
   stops Jekyll from publishing the backend code.

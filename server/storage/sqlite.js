@@ -1,10 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
+import { DuplicateError } from './errors.js';
 
 /**
- * Schema migrations, applied in order. Never edit an existing entry once it has
- * been deployed - append a new one instead.
+ * SQLite storage (Node's built-in node:sqlite). Used for local development and
+ * tests, or on any host with a persistent disk.
+ *
+ * Schema migrations are applied in order. Never edit an existing entry once it
+ * has been deployed - append a new one instead (and mirror it in mysql.js).
  */
 const MIGRATIONS = [
     `CREATE TABLE messages (
@@ -61,7 +65,7 @@ const REGISTRATION_COLUMNS = `id, created_at AS createdAt, event_id AS eventId, 
 const MESSAGE_COLUMNS = `id, created_at AS createdAt, name, email, subject, message, lang, handled`;
 
 /** Opens (and migrates) the SQLite database. Pass ':memory:' for tests. */
-export function openDatabase(file) {
+export function openSqlite(file) {
     if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
 
     const db = new DatabaseSync(file);
@@ -83,21 +87,18 @@ export function openDatabase(file) {
                 (:eventId, :name, :email, :phone, :adults, :children, :infants, :notes, :lang, :totalFee, :currency)`,
         ),
         getRegistration: db.prepare(`SELECT ${REGISTRATION_COLUMNS} FROM registrations WHERE id = ?`),
-        findRegistrationByEmail: db.prepare(
-            'SELECT id FROM registrations WHERE event_id = ? AND email = ?',
-        ),
         listRegistrations: db.prepare(
             `SELECT ${REGISTRATION_COLUMNS} FROM registrations WHERE event_id = ? ORDER BY id`,
         ),
         setRegistrationStatus: db.prepare('UPDATE registrations SET status = :status WHERE id = :id'),
         summary: db.prepare(
             `SELECT status,
-                    COUNT(*)                   AS registrations,
-                    COALESCE(SUM(adults), 0)   AS adults,
-                    COALESCE(SUM(children), 0) AS children,
-                    COALESCE(SUM(infants), 0)  AS infants,
+                    COUNT(*)                    AS registrations,
+                    COALESCE(SUM(adults), 0)    AS adults,
+                    COALESCE(SUM(children), 0)  AS children,
+                    COALESCE(SUM(infants), 0)   AS infants,
                     COALESCE(SUM(total_fee), 0) AS totalFee
-             FROM registrations WHERE event_id = ? GROUP BY status`,
+             FROM registrations WHERE event_id = ? GROUP BY status ORDER BY status`,
         ),
         headcount: db.prepare(
             `SELECT COALESCE(SUM(adults + children + infants), 0) AS people
@@ -105,27 +106,50 @@ export function openDatabase(file) {
         ),
     };
 
+    // Same async interface as the MySQL store, so routes don't care which one is used.
     return {
-        raw: db,
-        close: () => db.close(),
+        client: 'sqlite',
+        async ping() {
+            db.prepare('SELECT 1').get();
+        },
+        async close() {
+            db.close();
+        },
 
-        createMessage(msg) {
+        async createMessage(msg) {
             const { lastInsertRowid } = stmts.insertMessage.run(msg);
             return Number(lastInsertRowid);
         },
-        listMessages: () => stmts.listMessages.all(),
-        setMessageHandled: (id, handled) =>
-            stmts.markMessageHandled.run({ id, handled: handled ? 1 : 0 }).changes > 0,
-
-        createRegistration(reg) {
-            const { lastInsertRowid } = stmts.insertRegistration.run(reg);
-            return stmts.getRegistration.get(Number(lastInsertRowid));
+        async listMessages() {
+            return stmts.listMessages.all();
         },
-        registrationExists: (eventId, email) => Boolean(stmts.findRegistrationByEmail.get(eventId, email)),
-        getRegistration: (id) => stmts.getRegistration.get(id),
-        listRegistrations: (eventId) => stmts.listRegistrations.all(eventId),
-        setRegistrationStatus: (id, status) => stmts.setRegistrationStatus.run({ id, status }).changes > 0,
-        registrationSummary: (eventId) => stmts.summary.all(eventId),
-        headcount: (eventId) => stmts.headcount.get(eventId).people,
+        async setMessageHandled(id, handled) {
+            return stmts.markMessageHandled.run({ id, handled: handled ? 1 : 0 }).changes > 0;
+        },
+
+        async createRegistration(reg) {
+            try {
+                const { lastInsertRowid } = stmts.insertRegistration.run(reg);
+                return stmts.getRegistration.get(Number(lastInsertRowid));
+            } catch (err) {
+                if (/UNIQUE constraint failed/.test(err.message)) throw new DuplicateError();
+                throw err;
+            }
+        },
+        async getRegistration(id) {
+            return stmts.getRegistration.get(id);
+        },
+        async listRegistrations(eventId) {
+            return stmts.listRegistrations.all(eventId);
+        },
+        async setRegistrationStatus(id, status) {
+            return stmts.setRegistrationStatus.run({ id, status }).changes > 0;
+        },
+        async registrationSummary(eventId) {
+            return stmts.summary.all(eventId);
+        },
+        async headcount(eventId) {
+            return stmts.headcount.get(eventId).people;
+        },
     };
 }

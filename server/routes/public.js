@@ -7,6 +7,7 @@ import {
     sendInBackground,
 } from '../mailer.js';
 import { rateLimit } from '../middleware.js';
+import { DuplicateError } from '../storage/index.js';
 import { isSpam, validateContact, validateRegistration } from '../validation.js';
 
 const CLOSED_MESSAGES = {
@@ -24,16 +25,24 @@ export function publicRoutes({ db, event, mailer, config, logger, now = () => ne
     const router = Router();
     const limiter = rateLimit(config.rateLimit);
 
-    router.get('/health', (req, res) => {
-        res.json({ status: 'ok' });
+    // Also checks the database, so hosting health checks notice a lost connection.
+    router.get('/health', async (req, res) => {
+        res.set('Cache-Control', 'no-store');
+        try {
+            await db.ping();
+            res.json({ status: 'ok', database: db.client });
+        } catch (err) {
+            logger.error('Health check failed:', err.message);
+            res.status(503).json({ status: 'error', database: db.client });
+        }
     });
 
-    router.get('/event', (req, res) => {
+    router.get('/event', async (req, res) => {
         res.set('Cache-Control', 'no-cache');
-        res.json(publicEvent(event, db.headcount(event.id), now()));
+        res.json(publicEvent(event, await db.headcount(event.id), now()));
     });
 
-    router.post('/contact', limiter, (req, res) => {
+    router.post('/contact', limiter, async (req, res) => {
         const body = req.body ?? {};
         // Pretend success so bots don't learn they were caught.
         if (isSpam(body)) return res.status(201).json({ ok: true });
@@ -41,12 +50,12 @@ export function publicRoutes({ db, event, mailer, config, logger, now = () => ne
         const { value, errors } = validateContact(body);
         if (Object.keys(errors).length) return badRequest(res, errors);
 
-        const id = db.createMessage(value);
+        const id = await db.createMessage(value);
         sendInBackground(mailer, contactNotification(value, config.organizerEmail), logger);
         res.status(201).json({ ok: true, id });
     });
 
-    router.post('/registrations', limiter, (req, res) => {
+    router.post('/registrations', limiter, async (req, res) => {
         const body = req.body ?? {};
         if (isSpam(body)) return res.status(201).json({ ok: true });
 
@@ -54,7 +63,7 @@ export function publicRoutes({ db, event, mailer, config, logger, now = () => ne
         if (Object.keys(errors).length) return badRequest(res, errors);
 
         const at = now();
-        const headcount = db.headcount(event.id);
+        const headcount = await db.headcount(event.id);
         const closed = registrationClosedReason(event, headcount, at);
         if (closed) return res.status(409).json({ error: CLOSED_MESSAGES[closed], reason: closed });
 
@@ -67,19 +76,21 @@ export function publicRoutes({ db, event, mailer, config, logger, now = () => ne
             });
         }
 
-        if (db.registrationExists(event.id, value.email)) {
+        let registration;
+        try {
+            registration = await db.createRegistration({
+                ...value,
+                eventId: event.id,
+                totalFee: calculateFee(event, value, at),
+                currency: event.currency,
+            });
+        } catch (err) {
+            if (!(err instanceof DuplicateError)) throw err;
             return res.status(409).json({
                 error: 'This email address is already registered. Please contact us if you need to change your registration.',
                 reason: 'duplicate',
             });
         }
-
-        const registration = db.createRegistration({
-            ...value,
-            eventId: event.id,
-            totalFee: calculateFee(event, value, at),
-            currency: event.currency,
-        });
 
         sendInBackground(mailer, registrationNotification(registration, event, config.organizerEmail), logger);
         sendInBackground(mailer, registrationConfirmation(registration, event, config.organizerEmail), logger);

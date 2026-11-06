@@ -48,8 +48,8 @@ export function adminRoutes({ db, event, config }) {
         next();
     });
 
-    router.get('/summary', (req, res) => {
-        const byStatus = db.registrationSummary(event.id);
+    router.get('/summary', async (req, res) => {
+        const byStatus = await db.registrationSummary(event.id);
         const active = byStatus.filter((r) => r.status !== 'cancelled');
         const sum = (rows, key) => rows.reduce((acc, r) => acc + r[key], 0);
         res.json({
@@ -68,8 +68,8 @@ export function adminRoutes({ db, event, config }) {
         });
     });
 
-    router.get('/registrations', (req, res) => {
-        const rows = db.listRegistrations(event.id);
+    router.get('/registrations', async (req, res) => {
+        const rows = await db.listRegistrations(event.id);
         if (req.query.format === 'csv') {
             res.set('Content-Type', 'text/csv; charset=utf-8');
             res.set('Content-Disposition', `attachment; filename="${event.id}-registrations.csv"`);
@@ -78,28 +78,28 @@ export function adminRoutes({ db, event, config }) {
         res.json(rows);
     });
 
-    router.patch('/registrations/:id', (req, res) => {
+    router.patch('/registrations/:id', async (req, res) => {
         const id = parseId(req, res);
         if (id === null) return;
         const status = req.body?.status;
         if (!STATUSES.has(status)) {
             return res.status(400).json({ error: `status must be one of: ${[...STATUSES].join(', ')}` });
         }
-        if (!db.setRegistrationStatus(id, status)) return res.status(404).json({ error: 'Not found' });
-        res.json(db.getRegistration(id));
+        if (!(await db.setRegistrationStatus(id, status))) return res.status(404).json({ error: 'Not found' });
+        res.json(await db.getRegistration(id));
     });
 
-    router.get('/messages', (req, res) => {
-        res.json(db.listMessages());
+    router.get('/messages', async (req, res) => {
+        res.json(await db.listMessages());
     });
 
-    router.patch('/messages/:id', (req, res) => {
+    router.patch('/messages/:id', async (req, res) => {
         const id = parseId(req, res);
         if (id === null) return;
         if (typeof req.body?.handled !== 'boolean') {
             return res.status(400).json({ error: 'handled must be true or false' });
         }
-        if (!db.setMessageHandled(id, req.body.handled)) return res.status(404).json({ error: 'Not found' });
+        if (!(await db.setMessageHandled(id, req.body.handled))) return res.status(404).json({ error: 'Not found' });
         res.json({ ok: true });
     });
 

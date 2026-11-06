@@ -9,6 +9,26 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Real MySQL, matching the managed database used in production (GoDaddy).
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: hunghanians_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      # The suite runs once against SQLite and once against this database.
+      TEST_MYSQL_URL: mysql://root:root@127.0.0.1:3306/hunghanians_test
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
