@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Hunghanians</title>
+    <meta name="description" content="Photos from the Hunghanians Get Together and other Ghanaian community events in Hungary.">
+    <meta property="og:title" content="Gallery - Hunghanians">
+    <meta property="og:description" content="Celebrating Ghanaian Culture &amp; Community in Hungary">
+    <meta property="og:image" content="https://hunghanians.hu/assets/images/hero/hero-1200.jpg">
+    <meta property="og:url" content="https://hunghanians.hu/gallery.html">
+    <meta name="theme-color" content="#0b3a26">
+    <link rel="icon" href="assets/images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main" data-en="Skip to content" data-hu="Ugrás a tartalomra">Skip to content</a>
+
+    <header class="nav" id="nav">
+        <nav class="nav-content" aria-label="Main navigation">
+            <a href="index.html" class="nav-logo" aria-label="Hunghanians - home">
+                <img src="assets/images/logo-light.png" alt="" class="logo logo--light" width="576" height="130">
+                <img src="assets/images/logo-dark.png" alt="" class="logo logo--dark" width="576" height="130">
+            </a>
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#event" data-en="Event" data-hu="Esemény">Event</a></li>
+                <li><a href="gallery.html" class="is-active" aria-current="page" data-en="Gallery" data-hu="Galéria">Gallery</a></li>
+                <li><a href="index.html#community" data-en="Mission" data-hu="Küldetés">Mission</a></li>
+                <li hidden><a href="index.html#faq" data-en="FAQ" data-hu="GYIK">FAQ</a></li>
+                <li><a href="index.html#contact" data-en="Contact" data-hu="Kapcsolat">Contact</a></li>
+                <li class="language-switcher" role="group" aria-label="Language">
+                    <button type="button" class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
+                    <button type="button" class="lang-btn" data-lang="hu" aria-pressed="false">HU</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <section class="page-hero" id="top">
+            <div class="container">
+                <p class="eyebrow eyebrow--light" data-en="Gallery" data-hu="Galéria">Gallery</p>
+                <h1 class="page-title" data-en="Memories from our community" data-hu="Emlékek a közösségünkből">Memories from our community</h1>
+                <p class="page-lead"><span id="galleryCount"></span></p>
+                <div class="album-filters" id="albumFilters" role="group" aria-label="Albums" hidden></div>
+            </div>
+        </section>
+
+        <section class="section section--wall" aria-label="Photos">
+            <div class="container container--wide">
+                <!-- Filled from assets/data/gallery.json. Photos are added with `npm run gallery` (see README). -->
+                <div class="photo-wall" id="photoWall" aria-live="polite"></div>
+                <p class="wall-status" id="wallStatus" hidden></p>
+                <div class="wall-sentinel" id="wallSentinel" aria-hidden="true"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="kente" aria-hidden="true"></div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <img src="assets/images/logo-light.png" alt="Hunghanians" width="576" height="130" loading="lazy">
+                <p data-en="Celebrating Ghanaian Culture &amp; Community in Hungary" data-hu="Ghánai kultúra és közösség ünneplése Magyarországon">Celebrating Ghanaian Culture &amp; Community in Hungary</p>
+            </div>
+            <nav class="footer-nav" aria-label="Footer">
+                <h2 class="footer-heading" data-en="Explore" data-hu="Felfedezés">Explore</h2>
+                <ul>
+                    <li><a href="index.html#event" data-en="Event" data-hu="Esemény">Event</a></li>
+                    <li><a href="gallery.html" data-en="Gallery" data-hu="Galéria">Gallery</a></li>
+                    <li><a href="index.html#community" data-en="Mission" data-hu="Küldetés">Mission</a></li>
+                    <li><a href="index.html#contact" data-en="Contact" data-hu="Kapcsolat">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="footer-contact">
+                <h2 class="footer-heading" data-en="Get in touch" data-hu="Elérhetőség">Get in touch</h2>
+                <a href="mailto:hunghanians@gmail.com">hunghanians@gmail.com</a>
+                <!-- Add the Facebook page / Instagram profile links here when available. -->
+                <div class="social-links">
+                    <a href="https://www.facebook.com/events/1213001733667469/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="mailto:hunghanians@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; <span id="year">2026</span> Hunghanians - Roots. Connect.</p>
+            <a href="#top" class="back-to-top"><span data-en="Back to top" data-hu="Vissza az elejére">Back to top</span><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
+        </div>
+    </footer>
+
+    <!-- Gallery viewer: arrow keys, swipe, previous/next buttons. -->
+    <dialog id="lightbox" class="lightbox" aria-label="Photo viewer">
+        <figure class="lightbox-figure">
+            <img id="lightboxImage" src="" alt="">
+            <figcaption>
+                <span id="lightboxCaption"></span>
+                <span class="lightbox-counter" id="lightboxCounter"></span>
+            </figcaption>
+        </figure>
+        <button type="button" class="lightbox-btn lightbox-btn--prev" data-step="-1" aria-label="Previous photo"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <button type="button" class="lightbox-btn lightbox-btn--next" data-step="1" aria-label="Next photo"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+        <button type="button" class="lightbox-btn lightbox-btn--close" data-close aria-label="Close" autofocus><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </dialog>
+</body>
+</html>

@@ -120,6 +120,16 @@ describe(`API (${backendName})`, () => {
             assert.match(await res.text(), /Akwaaba/);
         });
 
+        test('serves the gallery page and an uncached photo list', async () => {
+            const page = await request('/gallery.html');
+            assert.equal(page.status, 200);
+            assert.match(page.headers.get('content-security-policy'), /default-src 'self'/);
+            const list = await request('/assets/data/gallery.json');
+            assert.equal(list.status, 200);
+            assert.equal(list.headers.get('cache-control'), 'no-cache');
+            assert.ok(Array.isArray((await list.json()).photos));
+        });
+
         test('serves assets', async () => {
             const res = await request('/assets/js/main.js');
             assert.equal(res.status, 200);

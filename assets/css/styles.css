@@ -914,6 +914,170 @@ section[id] {
     transform: translateY(0);
 }
 
+.gallery-more {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-l);
+}
+
+/* Photos fade in once loaded; until then the tile shows the photo's main colour. */
+.gallery-item img,
+.photo-tile img {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.8s var(--ease-out), filter 0.8s var(--ease-out);
+}
+
+.gallery-item.is-loaded img,
+.photo-tile.is-loaded img {
+    opacity: 1;
+}
+
+/* ---------- Gallery page ---------- */
+
+.page-hero {
+    padding: calc(var(--nav-height) + var(--space-xl)) 0 var(--space-xl);
+    color: #fff;
+    background:
+        radial-gradient(circle at 85% 0%, rgba(252, 209, 22, 0.14), transparent 45%),
+        radial-gradient(circle at 10% 100%, rgba(0, 107, 63, 0.6), transparent 55%),
+        var(--green-deep);
+}
+
+.page-title {
+    font-size: var(--step-4);
+    color: var(--cream);
+    max-width: 20ch;
+}
+
+.page-lead {
+    margin-top: var(--space-2xs);
+    font-size: var(--step-1);
+    opacity: 0.85;
+    min-height: 1.6em;
+}
+
+.album-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-top: var(--space-m);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    padding: 0.5em 1em;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--duration), color var(--duration), border-color var(--duration);
+}
+
+.chip small {
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+}
+
+.chip:hover {
+    border-color: #fff;
+}
+
+.chip[aria-pressed="true"] {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: var(--ink);
+}
+
+.section--wall {
+    padding-block: var(--space-l) var(--space-2xl);
+    background: #f6f5ef;
+}
+
+.container--wide {
+    --container: 1600px;
+}
+
+/*
+ * Justified rows: every tile grows in proportion to its aspect ratio, so each
+ * row fills the width at one shared height and photos are never cropped.
+ * --w / --h are the photo's pixel size (set by main.js).
+ */
+.photo-wall {
+    --row-height: clamp(96px, 4rem + 10vw, 240px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(4px, 0.6vw, 10px);
+}
+
+.photo-wall::after {
+    content: '';
+    flex-grow: 999999; /* keeps the last row from stretching */
+}
+
+.photo-tile {
+    position: relative;
+    flex-grow: calc(var(--w) / var(--h) * 100);
+    flex-basis: calc(var(--w) / var(--h) * var(--row-height));
+    aspect-ratio: var(--w) / var(--h);
+    max-height: calc(var(--row-height) * 1.6);
+    border: none;
+    padding: 0;
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    cursor: zoom-in;
+    color: #fff;
+    font: inherit;
+}
+
+.photo-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(7, 42, 27, 0.75), transparent 50%);
+    opacity: 0;
+    transition: opacity var(--duration);
+}
+
+.photo-tile .gallery-caption {
+    font-size: var(--step--1);
+    opacity: 0;
+    transition: opacity var(--duration), transform var(--duration) var(--ease-out);
+}
+
+.photo-tile:hover img,
+.photo-tile:focus-visible img {
+    transform: scale(1.04);
+}
+
+.photo-tile:hover::after,
+.photo-tile:focus-visible::after,
+.photo-tile:hover .gallery-caption,
+.photo-tile:focus-visible .gallery-caption {
+    opacity: 1;
+}
+
+.wall-status {
+    padding: var(--space-xl) 0;
+    text-align: center;
+    color: var(--muted);
+}
+
+.wall-sentinel {
+    height: 1px;
+}
+
 /* ---------- Lightbox ---------- */
 
 .lightbox {
@@ -1671,6 +1835,11 @@ dialog::backdrop {
 }
 
 @media (max-width: 600px) {
+    .photo-wall {
+        --row-height: 96px;
+        gap: 4px;
+    }
+
     .mission-grid,
     .footer-grid {
         grid-template-columns: 1fr;

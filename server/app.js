@@ -32,8 +32,20 @@ export function createApp({ config, db, event, mailer, logger = console, now }) 
         res.sendFile(path.join(ROOT_DIR, file));
     };
     app.get(['/', '/index.html'], sendPage('index.html', INDEX_CSP));
+    app.get('/gallery.html', sendPage('gallery.html', INDEX_CSP));
     app.get('/ghana_hungary_event.html', sendPage('ghana_hungary_event.html'));
-    app.use('/assets', express.static(path.join(ROOT_DIR, 'assets'), { maxAge: '7d', fallthrough: false }));
+    app.use(
+        '/assets',
+        express.static(path.join(ROOT_DIR, 'assets'), {
+            maxAge: '7d',
+            fallthrough: false,
+            setHeaders(res, file) {
+                // The photo list changes whenever photos are added; the photo files
+                // themselves are named by content hash, so they can be cached for long.
+                if (file.endsWith('.json')) res.set('Cache-Control', 'no-cache');
+            },
+        }),
+    );
 
     app.use((req, res) => res.status(404).type('text').send('Not found'));
 

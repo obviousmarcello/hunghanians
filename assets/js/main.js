@@ -24,6 +24,11 @@
             earlybirdLeft: (days) => (days <= 1 ? 'Earlybird ends today' : `Earlybird · ${days} days left`),
             earlybirdEnded: 'Earlybird offer ended',
             perPerson: '/ person',
+            viewAllPhotos: (n) => `View all ${n} photos`,
+            allPhotos: 'All',
+            photoCount: (n) => (n === 1 ? '1 photo' : `${n} photos`),
+            galleryEmpty: 'No photos here yet.',
+            galleryError: 'Sorry, the gallery could not be loaded. Please try again later.',
         },
         hu: {
             sending: 'Küldés...',
@@ -35,6 +40,11 @@
             earlybirdLeft: (days) => (days <= 1 ? 'Az earlybird ma lejár' : `Earlybird · még ${days} nap`),
             earlybirdEnded: 'Az earlybird ajánlat lejárt',
             perPerson: '/ fő',
+            viewAllPhotos: (n) => `Mind a(z) ${n} fotó`,
+            allPhotos: 'Összes',
+            photoCount: (n) => `${n} fotó`,
+            galleryEmpty: 'Itt még nincsenek fotók.',
+            galleryError: 'Sajnos a galériát nem sikerült betölteni. Kérjük, próbáld újra később.',
         },
     };
 
@@ -319,68 +329,277 @@
     }
 
     /* ------------------------------------------------------------ gallery */
+    // Photos come from assets/data/gallery.json, which `npm run gallery` writes.
 
-    function initGallery() {
-        const dialog = $('#lightbox');
-        const img = $('#lightboxImage');
-        const caption = $('#lightboxCaption');
-        const counter = $('#lightboxCounter');
-        const items = $$('.gallery-item');
-        let index = 0;
+    const GALLERY_URL = 'assets/data/gallery.json';
+    const FEATURED_LAYOUT = ['gallery-item--feature', '', '', 'gallery-item--wide', 'gallery-item--wide', 'gallery-item--wide'];
+    const PAGE_SIZE = 40;
 
-        const show = (i) => {
-            index = (i + items.length) % items.length;
-            const item = items[index];
-            img.src = item.dataset.full || $('img', item).src;
-            img.alt = $('.gallery-caption', item).textContent;
-            caption.textContent = img.alt;
-            counter.textContent = `${index + 1} / ${items.length}`;
-            img.classList.remove('is-entering');
-            void img.offsetWidth;
-            img.classList.add('is-entering');
-            // Warm the cache for the neighbours.
-            [index - 1, index + 1].forEach((n) => {
-                const next = items[(n + items.length) % items.length];
-                new Image().src = next.dataset.full;
+    let galleryData = null;
+    const loadGallery = () => {
+        galleryData ??= fetch(GALLERY_URL, { cache: 'no-cache' }).then((res) => {
+            if (!res.ok) throw new Error(`Gallery request failed with ${res.status}`);
+            return res.json();
+        });
+        return galleryData;
+    };
+
+    const albumTitle = (data, id) => {
+        const album = data.albums.find((a) => a.id === id);
+        return album?.title?.[currentLang] || album?.title?.en || '';
+    };
+    const captionText = (photo) => photo.caption?.[currentLang] || photo.caption?.en || '';
+
+    function createTile(photo, className, sizes) {
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.className = className;
+        tile.style.setProperty('--w', photo.width);
+        tile.style.setProperty('--h', photo.height);
+        tile.style.backgroundColor = photo.color;
+
+        const img = document.createElement('img');
+        img.src = photo.src[480];
+        img.srcset = `${photo.src[480]} 480w, ${photo.src[960]} 960w`;
+        img.sizes = sizes;
+        img.width = photo.width;
+        img.height = photo.height;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.alt = captionText(photo);
+        img.addEventListener('load', () => tile.classList.add('is-loaded'), { once: true });
+        tile.append(img);
+
+        const text = captionText(photo);
+        if (text) {
+            const caption = document.createElement('span');
+            caption.className = 'gallery-caption';
+            caption.textContent = text;
+            tile.append(caption);
+        }
+        return tile;
+    }
+
+    /** The photo viewer. Works on any list of photos from gallery.json. */
+    const lightbox = {
+        list: [],
+        index: 0,
+        onChange: null,
+        onClose: null,
+
+        init() {
+            this.dialog = $('#lightbox');
+            if (!this.dialog) return false;
+            this.img = $('#lightboxImage');
+            this.caption = $('#lightboxCaption');
+            this.counter = $('#lightboxCounter');
+
+            $$('[data-step]', this.dialog).forEach((btn) =>
+                btn.addEventListener('click', () => this.show(this.index + Number(btn.dataset.step))),
+            );
+            this.dialog.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') this.show(this.index - 1);
+                if (e.key === 'ArrowRight') this.show(this.index + 1);
             });
+            // Clicking empty space around the photo closes the viewer.
+            this.dialog.addEventListener('click', (e) => {
+                if (e.target === this.dialog || e.target.classList.contains('lightbox-figure')) this.dialog.close();
+            });
+            this.dialog.addEventListener('close', () => this.onClose?.());
+
+            // Swipe left/right on touch screens.
+            let startX = null;
+            this.img.addEventListener('pointerdown', (e) => {
+                startX = e.clientX;
+            });
+            this.img.addEventListener('pointerup', (e) => {
+                if (startX === null) return;
+                const dx = e.clientX - startX;
+                startX = null;
+                if (Math.abs(dx) > 40) this.show(this.index + (dx < 0 ? 1 : -1));
+            });
+
+            document.addEventListener('languagechange', () => {
+                if (this.dialog.open) this.show(this.index);
+            });
+            return true;
+        },
+
+        open(list, index) {
+            this.list = list;
+            this.show(index);
+            openDialog(this.dialog);
+        },
+
+        show(i) {
+            const { list } = this;
+            if (!list.length) return;
+            this.index = (i + list.length) % list.length;
+            const photo = list[this.index];
+            this.img.width = photo.width;
+            this.img.height = photo.height;
+            this.img.src = photo.src[1920];
+            this.img.alt = captionText(photo);
+            this.caption.textContent = captionText(photo);
+            this.counter.textContent = `${this.index + 1} / ${list.length}`;
+            this.img.classList.remove('is-entering');
+            void this.img.offsetWidth;
+            this.img.classList.add('is-entering');
+            // Warm the cache for the neighbours.
+            [this.index - 1, this.index + 1].forEach((n) => {
+                new Image().src = list[(n + list.length) % list.length].src[1920];
+            });
+            this.onChange?.(photo);
+        },
+    };
+
+    /** Homepage: up to six photos (those with a "featured" position first, then the newest). */
+    async function initFeaturedGallery() {
+        const grid = $('#galleryGrid');
+        if (!grid) return;
+        const viewAll = $('#galleryViewAll');
+
+        let data;
+        try {
+            data = await loadGallery();
+        } catch (err) {
+            console.error(err);
+            grid.closest('section').hidden = true;
+            return;
+        }
+
+        const featured = data.photos
+            .filter((p) => typeof p.featured === 'number')
+            .sort((a, b) => a.featured - b.featured);
+        const rest = data.photos.filter((p) => typeof p.featured !== 'number');
+        const shown = [...featured, ...rest].slice(0, FEATURED_LAYOUT.length);
+
+        const render = () => {
+            grid.replaceChildren(
+                ...shown.map((photo, i) => {
+                    const tile = createTile(
+                        photo,
+                        `gallery-item ${FEATURED_LAYOUT[i]}`.trim(),
+                        i === 0 ? '(max-width: 820px) 80vw, 50vw' : '(max-width: 820px) 80vw, 25vw',
+                    );
+                    tile.addEventListener('click', () => lightbox.open(shown, i));
+                    return tile;
+                }),
+            );
+            if (viewAll) {
+                viewAll.hidden = data.photos.length <= shown.length;
+                $('span', viewAll).textContent = t('viewAllPhotos')(data.photos.length);
+            }
+        };
+        render();
+        document.addEventListener('languagechange', render);
+    }
+
+    /** gallery.html: every photo, filterable by album, loaded in batches while scrolling. */
+    async function initPhotoWall() {
+        const wall = $('#photoWall');
+        if (!wall) return;
+        const filters = $('#albumFilters');
+        const count = $('#galleryCount');
+        const sentinel = $('#wallSentinel');
+        const status = $('#wallStatus');
+
+        let data;
+        try {
+            data = await loadGallery();
+        } catch (err) {
+            console.error(err);
+            status.textContent = t('galleryError');
+            status.hidden = false;
+            return;
+        }
+
+        const params = new URLSearchParams(location.search);
+        let album = data.albums.some((a) => a.id === params.get('album')) ? params.get('album') : 'all';
+        let list = [];
+        let rendered = 0;
+
+        const appendBatch = () => {
+            const next = list.slice(rendered, rendered + PAGE_SIZE);
+            const offset = rendered;
+            wall.append(
+                ...next.map((photo, i) => {
+                    const tile = createTile(photo, 'photo-tile', '(max-width: 600px) 50vw, 360px');
+                    tile.addEventListener('click', () => lightbox.open(list, offset + i));
+                    return tile;
+                }),
+            );
+            rendered += next.length;
+            sentinel.hidden = rendered >= list.length;
         };
 
-        items.forEach((item, i) =>
-            item.addEventListener('click', () => {
-                show(i);
-                openDialog(dialog);
-            }),
-        );
+        const renderFilters = () => {
+            const counts = Object.fromEntries(data.albums.map((a) => [a.id, 0]));
+            data.photos.forEach((p) => {
+                counts[p.album] = (counts[p.album] || 0) + 1;
+            });
+            const options = [
+                ['all', t('allPhotos'), data.photos.length],
+                ...data.albums.filter((a) => counts[a.id]).map((a) => [a.id, albumTitle(data, a.id), counts[a.id]]),
+            ];
+            filters.hidden = options.length <= 2; // "All" plus a single album: no need to filter
+            filters.replaceChildren(
+                ...options.map(([id, label, n]) => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'chip';
+                    chip.setAttribute('aria-pressed', String(id === album));
+                    chip.textContent = `${label} `;
+                    const small = document.createElement('small');
+                    small.textContent = n;
+                    chip.append(small);
+                    chip.addEventListener('click', () => {
+                        album = id;
+                        const url = new URL(location.href);
+                        if (id === 'all') url.searchParams.delete('album');
+                        else url.searchParams.set('album', id);
+                        history.replaceState(null, '', url);
+                        render();
+                    });
+                    return chip;
+                }),
+            );
+        };
 
-        $$('[data-step]', dialog).forEach((btn) =>
-            btn.addEventListener('click', () => show(index + Number(btn.dataset.step))),
-        );
+        const render = ({ keepCount = false } = {}) => {
+            const keep = keepCount ? rendered : 0;
+            list = album === 'all' ? data.photos : data.photos.filter((p) => p.album === album);
+            count.textContent = t('photoCount')(list.length);
+            status.textContent = list.length ? '' : t('galleryEmpty');
+            status.hidden = list.length > 0;
+            renderFilters();
+            wall.replaceChildren();
+            rendered = 0;
+            do appendBatch();
+            while (rendered < keep && rendered < list.length);
+        };
 
-        dialog.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') show(index - 1);
-            if (e.key === 'ArrowRight') show(index + 1);
-        });
+        render();
+        document.addEventListener('languagechange', () => render({ keepCount: true }));
 
-        // Clicking empty space around the photo closes the viewer.
-        dialog.addEventListener('click', (e) => {
-            if (e.target === dialog || e.target.classList.contains('lightbox-figure')) dialog.close();
-        });
+        new IntersectionObserver(
+            (entries) => {
+                if (entries.some((e) => e.isIntersecting) && rendered < list.length) appendBatch();
+            },
+            { rootMargin: '1200px 0px' },
+        ).observe(sentinel);
 
-        // Swipe left/right on touch screens.
-        let startX = null;
-        img.addEventListener('pointerdown', (e) => {
-            startX = e.clientX;
-        });
-        img.addEventListener('pointerup', (e) => {
-            if (startX === null) return;
-            const dx = e.clientX - startX;
-            startX = null;
-            if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
-        });
+        // Shareable links to a single photo: gallery.html#photo-<id>
+        lightbox.onChange = (photo) => history.replaceState(null, '', `${location.pathname}${location.search}#photo-${photo.id}`);
+        lightbox.onClose = () => history.replaceState(null, '', `${location.pathname}${location.search}`);
+        const linked = location.hash.startsWith('#photo-') ? list.findIndex((p) => `#photo-${p.id}` === location.hash) : -1;
+        if (linked >= 0) lightbox.open(list, linked);
+    }
 
-        document.addEventListener('languagechange', () => {
-            if (dialog.open) show(index);
-        });
+    function initGallery() {
+        if (!lightbox.init()) return;
+        initFeaturedGallery();
+        initPhotoWall();
     }
 
     /* ---------------------------------------------------------------- map */
@@ -496,6 +715,7 @@
 
     function initContactForm(backendReady) {
         const form = $('#contactForm');
+        if (!form) return;
 
         setupForm(form, async (data) => {
             const backend = await backendReady;
@@ -520,6 +740,7 @@
     function initRegistration(backend) {
         const dialog = $('#registerModal');
         const form = $('#registerForm');
+        if (!dialog || !form) return;
         const totalEl = $('.registration-total', dialog);
 
         // Without a backend (or once registration closes) the buttons keep linking to Google Forms.
