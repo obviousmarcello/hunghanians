@@ -1,0 +1,12 @@
+# GitHub Pages / Jekyll: publish only the static site, never the backend.
+exclude:
+  - server/
+  - test/
+  - data/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - Dockerfile
+  - .dockerignore
+  - .env.example
+  - README.md
