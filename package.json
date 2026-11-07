@@ -6,11 +6,11 @@
   "type": "module",
   "main": "server/index.js",
   "engines": {
-    "node": ">=22.13"
+    "node": ">=22"
   },
   "scripts": {
-    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.js",
-    "dev": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning --watch server/index.js",
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
     "gallery": "node scripts/gallery.mjs"
   },

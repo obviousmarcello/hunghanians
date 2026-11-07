@@ -87,7 +87,8 @@ photos rather than very large camera files. A few hundred phone photos are fine.
 
 ## Running the backend
 
-Requires Node.js 22.13 or newer. It uses the built-in `node:sqlite`, so there are no native modules to compile.
+Requires Node.js 22. With MySQL any Node 22 release works; the local SQLite database (the built-in `node:sqlite`)
+needs Node 22.13 or newer. There are no native modules to compile.
 
 ```bash
 npm install
@@ -101,7 +102,8 @@ cp .env.example .env    # optional, every setting has a default
 npm start
 ```
 
-`npm start` reads `.env` if it exists. Then open <http://localhost:3000>.
+`npm start` (plain `node server/index.js`) reads `.env` if it exists; variables set by the host take precedence.
+Then open <http://localhost:3000>.
 
 `npm run dev` restarts the server on file changes. Run `npm test` to run the API tests.
 
@@ -185,6 +187,20 @@ database. Its disk should not be relied on for data, so **the app must use that 
    remove the custom domain from GitHub Pages (repository Settings → Pages) so the two don't compete.
 6. Back up the database regularly (for example with an export from GoDaddy's database tools), and download the
    registrations CSV from the admin API before the event.
+
+### If the server stops working
+
+The website keeps running even when the database is unreachable or misconfigured: the server connects to
+the database in the background and keeps retrying. Until it succeeds, the API answers 503 and the page falls
+back to Formspree and the Google Form. The app log says what is wrong, for example:
+
+* `Database connection failed (attempt 3): … Retrying in 5s.`: the database is down or the host, user or
+  password is wrong. It recovers on its own once the database is reachable.
+* `Database settings are invalid: …`: a variable is missing; the message names it. Fix it and redeploy.
+* `Could not start the web server on …`: the port is wrong or already in use.
+* `Fatal error, exiting: …`: an unexpected bug. Please report the full message.
+
+`/api/health` shows the current state: `{"status":"ok","database":"mysql"}` when everything works.
 
 ### Other hosts
 

@@ -52,8 +52,14 @@ export function createApp({ config, db, event, mailer, logger = console, now }) 
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
         const status = err.status || err.statusCode || 500;
-        if (status >= 500) logger.error(err);
-        const message = status === 400 ? 'Malformed request body.' : status >= 500 ? 'Internal server error.' : err.message;
+        if (status >= 500 && !err.expose) logger.error(err);
+        const message = err.expose
+            ? err.message
+            : status === 400
+              ? 'Malformed request body.'
+              : status >= 500
+                ? 'Internal server error.'
+                : err.message;
         if (req.path.startsWith('/api')) return res.status(status).json({ error: message });
         res.status(status).type('text').send(message);
     });
