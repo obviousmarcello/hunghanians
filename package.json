@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "node server/index.js",
-    "dev": "node --watch server/index.js",
+    "dev": "node server/index.js",
+    "watch": "node --watch server/index.js",
     "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js",
     "gallery": "node scripts/gallery.mjs"
   },

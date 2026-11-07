@@ -105,7 +105,8 @@ npm start
 `npm start` (plain `node server/index.js`) reads `.env` if it exists; variables set by the host take precedence.
 Then open <http://localhost:3000>.
 
-`npm run dev` restarts the server on file changes. Run `npm test` to run the API tests.
+`npm run watch` restarts the server on file changes while you develop. Run `npm test` to run the API tests.
+(`npm run dev` is the same as `npm start`, because some hosts, GoDaddy included, start apps with it.)
 
 Locally, data is stored in SQLite at `data/hunghanians.db`, which git ignores. When MySQL settings are present
 (see below) the app uses MySQL instead and creates its tables automatically on first start.
@@ -170,7 +171,8 @@ GoDaddy runs the app as a Node.js 22 process from the GitHub repository and prov
 database. Its disk should not be relied on for data, so **the app must use that MySQL database**.
 
 1. In the GoDaddy Node.js Hosting dashboard, the app is connected to this repository and the `main` branch.
-   If asked for commands: install `npm ci`, start `npm start`. There is no build step.
+   If asked for commands: install `npm ci`, start `npm start` (GoDaddy's default `npm run dev` works too).
+   There is no build step. Never use `npm run watch` there: it restarts on file changes and isn't meant for hosting.
 2. Under the app's environment variables, set:
    * `ADMIN_TOKEN`: a long random string (enables the admin API).
    * `TRUST_PROXY=1`: GoDaddy's proxy sits in front of the app; without this, every visitor shares one rate limit.
