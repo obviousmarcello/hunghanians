@@ -17,6 +17,120 @@
   ],
   "photos": [
     {
+      "id": "b46445a42900",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#c8c8c8",
+      "takenAt": "2026-08-08T14:14:51.000Z",
+      "addedAt": "2026-11-07T07:53:10.264Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/b46445a42900-480.webp",
+        "960": "assets/images/gallery/b46445a42900-960.webp",
+        "1920": "assets/images/gallery/b46445a42900-1920.webp"
+      }
+    },
+    {
+      "id": "42556b0d4fea",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#e8e8e8",
+      "takenAt": "2026-08-08T14:14:09.000Z",
+      "addedAt": "2026-11-07T07:53:08.890Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/42556b0d4fea-480.webp",
+        "960": "assets/images/gallery/42556b0d4fea-960.webp",
+        "1920": "assets/images/gallery/42556b0d4fea-1920.webp"
+      }
+    },
+    {
+      "id": "e7b5c0819014",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#d8d8d8",
+      "takenAt": "2026-08-08T14:13:38.000Z",
+      "addedAt": "2026-11-07T07:53:07.198Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/e7b5c0819014-480.webp",
+        "960": "assets/images/gallery/e7b5c0819014-960.webp",
+        "1920": "assets/images/gallery/e7b5c0819014-1920.webp"
+      }
+    },
+    {
+      "id": "b5f34f97dc76",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#c8c8b8",
+      "takenAt": "2026-08-08T14:07:14.000Z",
+      "addedAt": "2026-11-07T07:53:05.554Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/b5f34f97dc76-480.webp",
+        "960": "assets/images/gallery/b5f34f97dc76-960.webp",
+        "1920": "assets/images/gallery/b5f34f97dc76-1920.webp"
+      }
+    },
+    {
+      "id": "a5e2e2309e10",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#c8c8b8",
+      "takenAt": "2026-08-08T14:07:07.000Z",
+      "addedAt": "2026-11-07T07:53:04.016Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/a5e2e2309e10-480.webp",
+        "960": "assets/images/gallery/a5e2e2309e10-960.webp",
+        "1920": "assets/images/gallery/a5e2e2309e10-1920.webp"
+      }
+    },
+    {
+      "id": "b63af07b9ca7",
+      "album": "get-together-2026",
+      "width": 1920,
+      "height": 1280,
+      "color": "#e8d8c8",
+      "takenAt": "2026-08-08T14:06:03.000Z",
+      "addedAt": "2026-11-07T07:53:02.509Z",
+      "featured": false,
+      "caption": {
+        "en": "",
+        "hu": ""
+      },
+      "src": {
+        "480": "assets/images/gallery/b63af07b9ca7-480.webp",
+        "960": "assets/images/gallery/b63af07b9ca7-960.webp",
+        "1920": "assets/images/gallery/b63af07b9ca7-1920.webp"
+      }
+    },
+    {
       "id": "46d4cada3fff",
       "album": "get-together",
       "width": 1920,
