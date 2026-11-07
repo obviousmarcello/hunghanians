@@ -1,6 +1,13 @@
 {
   "albums": [
     {
+      "id": "get-together-2026",
+      "title": {
+        "en": "Get Together 2026",
+        "hu": "Ghánai találkozó 2026"
+      }
+    },
+    {
       "id": "get-together",
       "title": {
         "en": "Get Together",

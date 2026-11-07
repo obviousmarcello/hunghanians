@@ -99,7 +99,12 @@ export async function openMysql({ host, port, user, password, database, ssl }) {
         enableKeepAlive: true,
     });
 
-    await migrate(pool);
+    try {
+        await migrate(pool);
+    } catch (err) {
+        await pool.end().catch(() => {});
+        throw err;
+    }
 
     const query = async (sql, params) => (await pool.execute(sql, params))[0];
 

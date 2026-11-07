@@ -84,14 +84,24 @@ export function databaseConfig(env = process.env) {
     };
 }
 
+/** Like databaseConfig, but returns the problem instead of throwing, so the site can still start. */
+function safeDatabaseConfig(env) {
+    try {
+        return databaseConfig(env);
+    } catch (err) {
+        return { client: 'invalid', error: err.message };
+    }
+}
+
 /** Reads runtime configuration from environment variables (see .env.example). */
 export function loadConfig(env = process.env) {
     return {
-        port: intFromEnv(env.PORT, 3000),
+        // Usually a number; some hosts pass a socket or pipe path instead.
+        port: !env.PORT ? 3000 : /^\d+$/.test(env.PORT) ? Number(env.PORT) : env.PORT,
         host: env.HOST || '0.0.0.0',
         // Number of reverse proxies in front of the app (for correct client IPs in rate limiting).
         trustProxy: intFromEnv(env.TRUST_PROXY, 0),
-        database: databaseConfig(env),
+        database: safeDatabaseConfig(env),
         eventConfigPath: env.EVENT_CONFIG_PATH || path.join(ROOT_DIR, 'server', 'event.json'),
         // Admin API is disabled unless a token of reasonable length is set.
         adminToken: env.ADMIN_TOKEN && env.ADMIN_TOKEN.length >= 16 ? env.ADMIN_TOKEN : null,

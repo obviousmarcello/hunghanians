@@ -1,4 +1,5 @@
 export { DuplicateError } from './errors.js';
+export { createResilientStorage, ServiceUnavailableError } from './resilient.js';
 
 /**
  * Opens the store described by `config.database` (see databaseConfig in

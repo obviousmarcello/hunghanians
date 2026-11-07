@@ -58,11 +58,13 @@ The easiest way, from a phone or a computer, needs no software:
    * from a computer, drag in a **whole folder** (e.g. `get-together-2025`): its name becomes the album;
    * or first open an existing album folder inside `photos/inbox/` and upload there;
    * photos uploaded directly into `photos/inbox/` (the usual case from a phone) go into the album "Photos".
+     Photos uploaded to the top level of the repository by mistake are picked up too and go into "Photos".
 3. Add the photos (GitHub accepts up to 100 files and 25 MB per file in one upload) and commit to `main`.
 4. The **Gallery photos** action (Actions tab) runs automatically. For each photo it:
    * converts iPhone HEIC photos, rotates them upright, and **removes location and other metadata**;
    * creates three web-sized WebP versions in `assets/images/gallery/` (about 0.5 MB in total per photo);
-   * adds the photo to `assets/data/gallery.json`, sorted newest first by the date it was taken;
+   * adds the photo to `assets/data/gallery.json`, sorted newest first by the date it was taken
+     (photos without a date go after the dated ones);
    * deletes the original from the inbox and commits the result. The site updates a few minutes later.
 
    The same photo uploaded twice is skipped. Files it can't read (videos, for example) stay in the inbox and
@@ -85,7 +87,8 @@ photos rather than very large camera files. A few hundred phone photos are fine.
 
 ## Running the backend
 
-Requires Node.js 22.13 or newer. It uses the built-in `node:sqlite`, so there are no native modules to compile.
+Requires Node.js 22. With MySQL any Node 22 release works; the local SQLite database (the built-in `node:sqlite`)
+needs Node 22.13 or newer. There are no native modules to compile.
 
 ```bash
 npm install
@@ -99,9 +102,11 @@ cp .env.example .env    # optional, every setting has a default
 npm start
 ```
 
-`npm start` reads `.env` if it exists. Then open <http://localhost:3000>.
+`npm start` (plain `node server/index.js`) reads `.env` if it exists; variables set by the host take precedence.
+Then open <http://localhost:3000>.
 
-`npm run dev` restarts the server on file changes. Run `npm test` to run the API tests.
+`npm run watch` restarts the server on file changes while you develop. Run `npm test` to run the API tests.
+(`npm run dev` is the same as `npm start`, because some hosts, GoDaddy included, start apps with it.)
 
 Locally, data is stored in SQLite at `data/hunghanians.db`, which git ignores. When MySQL settings are present
 (see below) the app uses MySQL instead and creates its tables automatically on first start.
@@ -166,7 +171,8 @@ GoDaddy runs the app as a Node.js 22 process from the GitHub repository and prov
 database. Its disk should not be relied on for data, so **the app must use that MySQL database**.
 
 1. In the GoDaddy Node.js Hosting dashboard, the app is connected to this repository and the `main` branch.
-   If asked for commands: install `npm ci`, start `npm start`. There is no build step.
+   If asked for commands: install `npm ci`, start `npm start` (GoDaddy's default `npm run dev` works too).
+   There is no build step. Never use `npm run watch` there: it restarts on file changes and isn't meant for hosting.
 2. Under the app's environment variables, set:
    * `ADMIN_TOKEN`: a long random string (enables the admin API).
    * `TRUST_PROXY=1`: GoDaddy's proxy sits in front of the app; without this, every visitor shares one rate limit.
@@ -183,6 +189,20 @@ database. Its disk should not be relied on for data, so **the app must use that 
    remove the custom domain from GitHub Pages (repository Settings → Pages) so the two don't compete.
 6. Back up the database regularly (for example with an export from GoDaddy's database tools), and download the
    registrations CSV from the admin API before the event.
+
+### If the server stops working
+
+The website keeps running even when the database is unreachable or misconfigured: the server connects to
+the database in the background and keeps retrying. Until it succeeds, the API answers 503 and the page falls
+back to Formspree and the Google Form. The app log says what is wrong, for example:
+
+* `Database connection failed (attempt 3): … Retrying in 5s.`: the database is down or the host, user or
+  password is wrong. It recovers on its own once the database is reachable.
+* `Database settings are invalid: …`: a variable is missing; the message names it. Fix it and redeploy.
+* `Could not start the web server on …`: the port is wrong or already in use.
+* `Fatal error, exiting: …`: an unexpected bug. Please report the full message.
+
+`/api/health` shows the current state: `{"status":"ok","database":"mysql"}` when everything works.
 
 ### Other hosts
 
